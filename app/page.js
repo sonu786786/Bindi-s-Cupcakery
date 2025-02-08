@@ -6,10 +6,10 @@ import { useState } from "react";
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(0);
   const images = [
-    "/cupcakes.jpg",
-    "/brownies.jpg",
-    "/cakes.jpg",
-    "/icecream.jpg",
+    "/cake.jpg",
+    "/hp_img2.jpg",
+    "/hp_img3.jpg",
+    "/hp_img4.jpg",
   ];
 
   return (
@@ -80,26 +80,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social Media & WhatsApp */}
-      <section className="flex flex-col items-center py-12">
-        <h2 className="text-2xl font-bold text-blue-400">Stay Connected 💬</h2>
-        <div className="flex gap-4 mt-4">
-          <Link href="https://www.instagram.com/bindis_cupcakery">
-            <button className="bg-gradient-to-r from-pink-500 to-orange-400 text-white px-4 py-2 rounded-full">
-              Instagram 📸
-            </button>
-          </Link>
-          <Link href="https://www.facebook.com/bindis_cupcakery">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-full">
-              Facebook 👍
-            </button>
-          </Link>
-        </div>
-        <div className="mt-6">
-          <Image src="/whatsapp-qr.png" alt="WhatsApp Order QR" width={150} height={150} />
-          <p className="text-sm mt-2">Scan to Order on WhatsApp 📱</p>
-        </div>
-      </section>
+      
     </div>
   );
 }
