@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
+import Link from 'next/link';
 import Image from "next/image";
 
 const Navbar = () => {
@@ -41,12 +41,12 @@ const Navbar = () => {
               onMouseEnter={() => setCollectionsOpen(true)}
               onMouseLeave={() => setCollectionsOpen(false)}
             >
-              <Link href="/cupcakes" className="block px-4 py-2 hover:bg-purple-800">Cupcakes</Link>
-              <Link href="/brownies" className="block px-4 py-2 hover:bg-purple-800">Brownies</Link>
-              <Link href="/cakes" className="block px-4 py-2 hover:bg-purple-800">Cakes</Link>
-              <Link href="/pastries" className="block px-4 py-2 hover:bg-purple-800">Pastries</Link>
-              <Link href="/cookies" className="block px-4 py-2 hover:bg-purple-800">Cookies</Link>
-              <Link href="/icecreams" className="block px-4 py-2 hover:bg-purple-800">Ice Creams</Link>
+              <Link href="/Cupcakes" className="block px-4 py-2 hover:bg-purple-800">Cupcakes</Link>
+              <Link href="/Brownies" className="block px-4 py-2 hover:bg-purple-800">Brownies</Link>
+              <Link href="/Cakes" className="block px-4 py-2 hover:bg-purple-800">Cakes</Link>
+              <Link href="/Pastries" className="block px-4 py-2 hover:bg-purple-800">Pastries</Link>
+              <Link href="/Cookies" className="block px-4 py-2 hover:bg-purple-800">Cookies</Link>
+              <Link href="/Icecreams" className="block px-4 py-2 hover:bg-purple-800">Ice Creams</Link>
             </div>
           )}
         </div>
