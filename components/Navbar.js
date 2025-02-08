@@ -84,9 +84,15 @@ const Navbar = () => {
         </Link>
 
         {/* Login/Register Button */}
+        <Link href="/Register">
+          <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
+          Register
+          </button>
+        </Link>
+
         <Link href="/login">
           <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
-            Login/Register
+            Login
           </button>
         </Link>
       </ul>
