@@ -22,7 +22,7 @@ export default function Home() {
         <p className="mt-4 text-lg">
           100% Eggless, Homemade & Preservative-Free Desserts in Surat!
         </p>
-        <Link href="/order">
+        <Link href="/about_us">
           <button className="mt-6 bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full">
             Order Now
           </button>
