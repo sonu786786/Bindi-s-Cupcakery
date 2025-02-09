@@ -106,19 +106,32 @@ const Navbar = () => {
             </Link>
           </>)
          }
-          { auth && (<>
-            <Link href="/dashboard">
-              <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
-                Dashboard
-              </button>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="text-white bg-gradient-to-br from-red-500 to-red-700 hover:bg-gradient-to-bl focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5"
-            >
-              Logout
-            </button>
-          </>)}
+          {auth && (
+  <div className="relative">
+    <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
+      {auth?.user?.name}
+    </button>
+    <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200">
+      <li>
+        <Link
+          href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+          className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+        >
+          Dashboard
+        </Link>
+      </li>
+      <li>
+        <button
+          onClick={handleLogout}
+          className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-100"
+        >
+          Logout
+        </button>
+      </li>
+    </ul>
+  </div>
+)}
+
         
       </ul>
     </nav>
