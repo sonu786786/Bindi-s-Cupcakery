@@ -1,12 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
+import Navigate from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { useAuth } from "../../Context/auth";
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [auth, setAuth] = useAuth();
 
 
   const router = useRouter();
@@ -18,13 +21,27 @@ export default function Register() {
         email,
         password
       });
-
-      if (res.data && res.data.success) {
+      console.log("response data",res.data);
+      console.log("response data 1",res.data.user);
+      console.log("response data 2",res.data.token);
+      
+      if(res){
         toast.success(res.data.message);
-        router.push('/'); // Redirect to login page
-      } else {
-        toast.error(res.data.message);
-      }
+        setAuth({
+            
+            user: res.data.user,
+            token: res.data.token,
+          });
+        localStorage.setItem("auth", JSON.stringify(res.data.token));
+        // navigate(location.state || '/');
+        console.log("setauth pass ho gya ji");
+        // redirect("/");
+        router.push('/')
+        
+    }
+    else{
+        toast.success(res.data.message)
+    }
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong');

@@ -1,11 +1,18 @@
+// /components/Navbar.js
 "use client";
 import React, { useState } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/Context/auth"; // Import the useAuth hook
 
 const Navbar = () => {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
+  const [ auth, login, logout ] = useAuth(); // Use the auth state from context
+  console.log("auth = ", auth);
+  const handleLogout = () => {
+    logout(); // Log out by clearing the context and localStorage
+  };
 
   return (
     <nav className="bg-black text-white flex justify-between items-center px-6 h-20 relative">
@@ -82,19 +89,37 @@ const Navbar = () => {
             About Us
           </button>
         </Link>
+          {console.log("in navbar",auth)}
+        {/* Conditional Buttons based on Login Status */}
+        {!auth &&
+          (<>
+            <Link href="/Register">
+              <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                Register
+              </button>
+            </Link>
 
-        {/* Login/Register Button */}
-        <Link href="/Register">
-          <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
-          Register
-          </button>
-        </Link>
-
-        <Link href="/Login">
-          <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
-            Login
-          </button>
-        </Link>
+            <Link href="/Login">
+              <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                Login
+              </button>
+            </Link>
+          </>)
+         }
+          { auth && (<>
+            <Link href="/dashboard">
+              <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
+                Dashboard
+              </button>
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-white bg-gradient-to-br from-red-500 to-red-700 hover:bg-gradient-to-bl focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5"
+            >
+              Logout
+            </button>
+          </>)}
+        
       </ul>
     </nav>
   );
