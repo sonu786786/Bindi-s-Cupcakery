@@ -10,10 +10,11 @@ const Navbar = () => {
   return (
     <nav className="bg-black text-white flex justify-between items-center px-6 h-20 relative">
       {/* Logo & Name */}
+      <Link href="/"> 
       <div className="flex items-center gap-3">
         <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={55} height={55} className="rounded-full" />
         <h2 className="text-xl font-bold">Bindi’s Cupcakery</h2>
-      </div>
+      </div></Link>
 
       {/* Search Bar */}
       <div className="relative">
@@ -65,23 +66,24 @@ const Navbar = () => {
               onMouseEnter={() => setOrdersOpen(true)}
               onMouseLeave={() => setOrdersOpen(false)}
             >
-              <Link href="/design-your-own" className="block px-4 py-2 hover:bg-purple-800">Design Your Own</Link>
-              <Link href="/choose-collection" className="block px-4 py-2 hover:bg-purple-800">Choose from Our Collection</Link>
+              <Link href="/Design_Your_Own" className="block px-4 py-2 hover:bg-purple-800">Design Your Own</Link>
+              <Link href="/Choose_from_Our_Collection" className="block px-4 py-2 hover:bg-purple-800">Choose from Our Collection</Link>
             </div>
           )}
         </div>
+        <Link href="/About_Us">
+          <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
+            About Us
+          </button>
+        </Link>
 
-        <Link href="/contact">
+        <Link href="/Contact_Us">
           <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
             Contact Us
           </button>
         </Link>
 
-        <Link href="/about">
-          <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
-            About Us
-          </button>
-        </Link>
+       
 
         {/* Login/Register Button */}
         <Link href="/Register">
