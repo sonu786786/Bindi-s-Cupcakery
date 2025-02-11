@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     // const storedAuth = ;
     if (localStorage.getItem("auth")) {
       setAuth(() => localStorage.getItem("auth"));
+
     }
     
     }

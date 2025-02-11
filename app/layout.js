@@ -18,7 +18,8 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "Bindi's Cupcakery",
-  description: "Bindi’s Cupcakery is a vegetarian, eggless bakery offering a wide variety of homemade, preservative-free desserts such as cupcakes, brownies, cakes, and ice creams",
+  description:
+    "Bindi’s Cupcakery is a vegetarian, eggless bakery offering a wide variety of homemade, preservative-free desserts such as cupcakes, brownies, cakes, and ice creams",
 };
 
 export default function RootLayout({ children }) {
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         {/* Wrap with AuthProvider */}
         <AuthProvider>
           <Navbar />
+          <Toaster position="top-right" /> {/* Added Toaster here */}
           <div className="min-h-[82vh]">
             <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
             {children}
@@ -39,4 +41,4 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+} 
