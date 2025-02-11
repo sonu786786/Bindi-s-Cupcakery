@@ -1,18 +1,40 @@
-// /components/Navbar.js
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/Context/auth"; // Import the useAuth hook
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
-  const [ auth, login, logout ] = useAuth(); // Use the auth state from context
-  console.log("auth = ", auth);
-  const handleLogout = () => {
-    logout(); // Log out by clearing the context and localStorage
-  };
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
+  const [auth, login, logout,setAuth] = useAuth(); // Use the auth state from context
+
+const handleLogout = () => {
+  logout();  // Log out by clearing the context and localStorage
+  setUserMenuOpen(false);
+  setAuth(null); // Clear the auth context state
+  localStorage.removeItem('auth'); // Remove auth data from localStorage
+  // Use the router to navigate to the home page
+  const router = useRouter();
+  router.push('/');  // Redirect to the home page
+};
+
+
+  // Close the dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-black text-white flex justify-between items-center px-6 h-20 relative">
@@ -89,10 +111,10 @@ const Navbar = () => {
             About Us
           </button>
         </Link>
-          {console.log("in navbar",auth)}
+
         {/* Conditional Buttons based on Login Status */}
-        {!auth &&
-          (<>
+        {!auth ? (
+          <>
             <Link href="/Register">
               <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
                 Register
@@ -104,35 +126,38 @@ const Navbar = () => {
                 Login
               </button>
             </Link>
-          </>)
-         }
-          {auth && (
-  <div className="relative">
-    <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
-      {auth?.user?.name}
-    </button>
-    <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200">
-      <li>
-        <Link
-          href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
-          className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-        >
-          Dashboard
-        </Link>
-      </li>
-      <li>
-        <button
-          onClick={handleLogout}
-          className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-100"
-        >
-          Logout
-        </button>
-      </li>
-    </ul>
-  </div>
-)}
-
-        
+          </>
+        ) : (
+          <div className="relative" ref={userMenuRef}>
+            <button
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
+              className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5"
+            >
+              {auth?.user?.name} ▼
+            </button>
+            {userMenuOpen && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200">
+                <li>
+                  <Link
+                    href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-100"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
       </ul>
     </nav>
   );

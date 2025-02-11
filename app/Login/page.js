@@ -21,32 +21,31 @@ export default function Register() {
         email,
         password
       });
-      console.log("response data",res.data);
-      console.log("response data 1",res.data.user);
-      console.log("response data 2",res.data.token);
+  
+      console.log("response data", res.data);
+      console.log("response data 1", res.data.user);
+      console.log("response data 2", res.data.token);
       
-      if(res){
+      if (res) {
         toast.success(res.data.message);
-        setAuth({
-            
-            user: res.data.user,
-            token: res.data.token,
-          });
-        localStorage.setItem("auth", JSON.stringify(res.data.token));
-        // navigate(location.state || '/');
-        console.log("setauth pass ho gya ji");
-        // redirect("/");
-        router.push('/')
-        
-    }
-    else{
-        toast.success(res.data.message)
-    }
+  
+        // Save the user data and token together in localStorage
+        const authData = {
+          user: res.data.user,
+          token: res.data.token,
+        };
+  
+        setAuth(authData);  // Update the context
+        localStorage.setItem("auth", JSON.stringify(authData));  // Store both user and token
+  
+        router.push('/');  // Redirect to the home page
+      }
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong');
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
