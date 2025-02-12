@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/Context/auth"; // Import AuthProvider
 
+// Load custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,6 +17,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+// Metadata for the website
 export const metadata = {
   title: "Bindi's Cupcakery",
   description:
@@ -25,10 +27,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* Wrap with AuthProvider */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Wrap with AuthProvider for authentication context */}
         <AuthProvider>
           <Navbar />
           <Toaster position="top-right" /> {/* Added Toaster here */}

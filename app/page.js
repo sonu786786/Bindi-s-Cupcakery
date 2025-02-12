@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -12,44 +12,43 @@ export default function Home() {
     "/hp_img4.jpg",
   ];
 
+  // Automatically change hero image every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSelectedImage((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
+
   return (
     <div className="bg-black text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center text-center py-16 px-6">
-        <h1 className="text-4xl font-bold text-pink-500">
-          Welcome to Bindi’s Cupcakery 🍰
-        </h1>
-        <p className="mt-4 text-lg">
-          100% Eggless, Homemade & Preservative-Free Desserts in Surat!
-        </p>
-        <Link href="/about_us">
-          <button className="mt-6 bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full">
-            Order Now
-          </button>
-        </Link>
-      </section>
-
-      {/* Image Carousel */}
-      <section className="flex flex-col items-center">
-        <div className="relative w-3/4 md:w-1/2 h-64">
+      {/* Hero Section - Full Screen */}
+      <section className="relative flex flex-col items-center justify-center text-center h-screen w-full">
+        {/* Background Image that Changes Every 3 Seconds */}
+        <div className="absolute inset-0 w-full h-full">
           <Image
             src={images[selectedImage]}
             alt="Bindi's Cupcakery Special"
             layout="fill"
             objectFit="cover"
-            className="rounded-lg"
+            className="brightness-50"
           />
         </div>
-        <div className="flex gap-2 mt-4">
-          {images.map((img, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedImage(index)}
-              className={`w-4 h-4 rounded-full ${
-                selectedImage === index ? "bg-pink-500" : "bg-gray-400"
-              }`}
-            ></button>
-          ))}
+
+        {/* Overlay Content */}
+        <div className="relative z-10">
+          <h1 className="text-5xl font-extrabold text-pink-400 md:text-6xl">
+            Welcome to Bindi’s Cupcakery 🍰
+          </h1>
+          <p className="mt-4 text-lg text-gray-200">
+            100% Eggless, Homemade & Preservative-Free Desserts in Surat!
+          </p>
+          <Link href="/about_us">
+            <button className="mt-6 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition">
+              Order Now
+            </button>
+          </Link>
         </div>
       </section>
 
@@ -79,8 +78,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 }

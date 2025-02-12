@@ -92,23 +92,27 @@ const AdminOrders = () => {
 
             {/* Products List */}
             <div className="mt-4">
-              {order?.products?.map((product) => (
-                <div
-                  key={product._id}
-                  className="flex items-center bg-gray-100 p-3 rounded-md shadow-md mb-2"
-                >
-                  <img
-                    src={`/api/v1/product/product-photo/${product._id}`}
-                    alt={product.name}
-                    className="w-16 h-16 object-cover rounded-md"
-                  />
-                  <div className="ml-4">
-                    <p className="font-semibold">{product.name}</p>
-                    <p className="text-gray-500">{product.description.substring(0, 30)}...</p>
-                    <p className="text-gray-700 font-bold">₹{product.price}</p>
+              {order?.products?.map((product) => {
+                const imageUrl = `http://localhost:4000/api/v1/product/product-photo/${product._id}`;
+                return (
+                  <div
+                    key={product._id}
+                    className="flex items-center bg-gray-100 p-3 rounded-md shadow-md mb-2"
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={product.name}
+                      className="w-16 h-16 object-cover rounded-md"
+                      onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} // Fallback image if the image fails to load
+                    />
+                    <div className="ml-4">
+                      <p className="font-semibold">{product.name}</p>
+                      <p className="text-gray-500">{product.description.substring(0, 30)}...</p>
+                      <p className="text-gray-700 font-bold">₹{product.price}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))}

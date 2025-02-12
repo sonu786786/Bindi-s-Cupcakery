@@ -1,4 +1,5 @@
-'use client'; // Add this line at the top of the file
+'use client'; // Ensure this is a client component
+
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -16,14 +17,31 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
 
+  const auth = JSON.parse(localStorage.getItem("auth")); // Parse stored object
+  const token = auth?.token; // Extract token
+
   // Get all categories
   const getAllCategory = async () => {
+    if (!token) {
+      console.log("Error: No token found");
+      return toast.error("Authentication failed. Please log in.");
+    }
+
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category");
+      console.log("Fetching categories with token:", token);
+      const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
       if (data?.success) {
+        console.log("Categories fetched successfully:", data.category);
         setCategories(data?.category);
+      } else {
+        console.log("Error fetching categories:", data.message);
+        toast.error(data.message);
       }
     } catch (error) {
+      console.error("Error fetching categories:", error);
       toast.error("Something went wrong in getting category");
     }
   };
@@ -35,7 +53,14 @@ const CreateProduct = () => {
   // Create product function
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (!token) {
+      console.log("Error: No token found");
+      return toast.error("Authentication failed. Please log in.");
+    }
+
     try {
+      console.log("Creating product with token:", token);
+
       const productData = new FormData();
       productData.append("name", name);
       productData.append("description", description);
@@ -45,33 +70,37 @@ const CreateProduct = () => {
       productData.append("category", category);
 
       const { data } = await axios.post(
-        "/api/v1/product/create-product",
-        productData
+        "http://localhost:4000/api/v1/product/create-product",
+        productData,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data?.success) {
+        console.log("Product created successfully");
         toast.success("Product Created Successfully");
         // Navigate to products page after creation
         window.location.href = "/dashboard/admin/products"; // Use direct navigation
       } else {
+        console.log("Error creating product:", data?.message);
         toast.error(data?.message);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      console.error("Error creating product:", error);
+      toast.error("Something went wrong while creating the product");
     }
   };
 
   return (
     <div className="container mx-auto p-6 bg-gray-800 text-white">
       <div className="col-md-3">
-            <AdminMenu />
-        </div>
+        <AdminMenu />
+      </div>
       <h1 className="text-2xl font-semibold mb-6">Create Product</h1>
       <form className="space-y-4" onSubmit={handleCreate}>
         {/* Category Selection */}
         <div className="mb-4">
           <Select
-            bordered={false}
+            variant="filled" // Updated from 'bordered' to 'variant'
             placeholder="Select a category"
             size="large"
             showSearch
@@ -157,6 +186,7 @@ const CreateProduct = () => {
         {/* Shipping Selection */}
         <div className="mb-4">
           <Select
+            variant="filled" // Updated from 'bordered' to 'variant'
             placeholder="Select Shipping"
             size="large"
             showSearch

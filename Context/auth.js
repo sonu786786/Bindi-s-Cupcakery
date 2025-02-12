@@ -1,4 +1,3 @@
-// /Context/auth.js
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
@@ -12,35 +11,38 @@ export const useAuth = () => {
 
 // AuthProvider component to provide authentication data
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState("") ;
-  // Load authentication data from localStorage or cookies
+  const [auth, setAuth] = useState(null);  // Initialize with null instead of "" for clarity
   useEffect(() => {
-    function abc(){
-      // console.log(localStorage.getItem("auth"),"in use effect")
-    // const storedAuth = ;
-    if (localStorage.getItem("auth")) {
-      setAuth(() => localStorage.getItem("auth"));
+    // Get auth data from localStorage and parse it safely
 
-    }
-    
-    }
-    abc();
-    // console.log(auth,"auth")
-  }, []);
-  
+    function setitem(){const storedAuth = localStorage.getItem("auth");
+
+    // Check if there's a valid auth token in localStorage
+    if (storedAuth) {
+      try {
+        const parsedAuth = JSON.parse(storedAuth);
+        setAuth(parsedAuth);  // Set parsed auth data to state
+      } catch (e) {
+        console.error("Error parsing auth data from localStorage", e);
+      }
+    }}
+    setitem();
+  }, []);  // Empty dependency array, run only once when the component mounts
+
   const login = (userData) => {
-    setAuth(userData);
-    localStorage.setItem("auth", JSON.stringify(userData));
+    setAuth(userData);  // Update the state with the user data
+    localStorage.setItem("auth", JSON.stringify(userData));  // Store the user data in localStorage
   };
 
   const logout = () => {
-    setAuth(null);
-    localStorage.removeItem("auth");
+    setAuth(null);  // Clear auth data from state
+    localStorage.removeItem("auth");  // Remove auth data from localStorage
   };
 
   return (
-    <AuthContext.Provider value={[ auth , login, logout, setAuth ]}>
+    <AuthContext.Provider value={[auth, login, logout, setAuth]}>
       {children}
     </AuthContext.Provider>
   );
 };
+
