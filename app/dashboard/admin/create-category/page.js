@@ -1,4 +1,5 @@
-'use client'; // Add this line at the top of the file
+'use client'; // Ensure this is a client component
+
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -12,31 +13,56 @@ const CreateCategory = () => {
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
 
+  const auth = JSON.parse(localStorage.getItem("auth")); // Parse stored object
+  const token = auth?.token; // Extract token
+
   // Handle Form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!token) {
+      console.log("Error: No token found");
+      return toast.error("Authentication failed. Please log in.");
+    }
+
     try {
-      const { data } = await axios.post("http://localhost:4000/api/v1/category/create-category", { name });
-      if (data?.success) {
+      console.log("Submitting with token:", token);
+
+      const { data } = await axios.post(
+        "http://localhost:4000/api/v1/category/create-category",
+        { name },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        console.log("Category created successfully");
         toast.success(`${name} is created`);
-        getAllCategory();
+        getAllCategory(); // Refresh categories
       } else {
+        console.log("Error in category creation:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong in input form");
+      console.error("Request Error:", error);
+      toast.error("Something went wrong while creating category.");
     }
   };
 
   // Get all categories
   const getAllCategory = async () => {
     try {
+      console.log("Fetching categories...");
       const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category");
+
       if (data.success) {
+        console.log("Categories fetched successfully:", data.category);
         setCategories(data.category);
+      } else {
+        console.log("Error fetching categories:", data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong in getting category");
+      console.error("Error fetching categories:", error);
+      toast.error("Something went wrong while fetching categories.");
     }
   };
 
@@ -47,45 +73,71 @@ const CreateCategory = () => {
   // Update category
   const handleUpdate = async (e) => {
     e.preventDefault();
+    if (!token) {
+      console.log("Error: No token found");
+      return toast.error("Authentication failed. Please log in.");
+    }
+
     try {
+      console.log("Updating category:", selected?._id, "New Name:", updatedName);
+
       const { data } = await axios.put(
         `http://localhost:4000/api/v1/category/update-category/${selected._id}`,
-        { name: updatedName }
+        { name: updatedName },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
       if (data.success) {
+        console.log("Category updated successfully");
         toast.success(`${updatedName} is updated`);
         setSelected(null);
         setUpdatedName("");
         setVisible(false);
         getAllCategory();
       } else {
+        console.log("Error updating category:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      console.error("Error updating category:", error);
+      toast.error("Something went wrong while updating category.");
     }
   };
 
   // Delete category
   const handleDelete = async (pId) => {
+    if (!token) {
+      console.log("Error: No token found");
+      return toast.error("Authentication failed. Please log in.");
+    }
+
     try {
-      const { data } = await axios.delete(`http://localhost:4000/api/v1/category/delete-category/${pId}`);
+      console.log("Deleting category:", pId);
+
+      const { data } = await axios.delete(
+        `http://localhost:4000/api/v1/category/delete-category/${pId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       if (data.success) {
+        console.log("Category deleted successfully");
         toast.success("Category is deleted");
         getAllCategory();
       } else {
+        console.log("Error deleting category:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      console.error("Error deleting category:", error);
+      toast.error("Something went wrong while deleting category.");
     }
   };
 
   return (
     <div className="container mx-auto p-6 bg-black text-white">
       <div className="col-md-3">
-            <AdminMenu />
-        </div>
+        <AdminMenu />
+      </div>
       <div className="flex">
         <div className="w-3/4">
           <h1 className="text-2xl font-semibold mb-4">Manage Category</h1>

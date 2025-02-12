@@ -8,41 +8,26 @@ import { useRouter } from 'next/navigation';
 const Navbar = () => {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
+  const [auth, login, logout] = useAuth(); // Use the auth state from context
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const userMenuRef = useRef(null);
-  const [auth, login, logout,setAuth] = useAuth(); // Use the auth state from context
+  const userMenuRef = useRef(null); // Define the reference here
 
-const handleLogout = () => {
-  logout();  // Log out by clearing the context and localStorage
-  setUserMenuOpen(false);
-  setAuth(null); // Clear the auth context state
-  localStorage.removeItem('auth'); // Remove auth data from localStorage
-  // Use the router to navigate to the home page
-  const router = useRouter();
-  router.push('/');  // Redirect to the home page
-};
+  console.log("auth = ", auth);
 
-
-  // Close the dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setUserMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleLogout = () => {
+    logout(); // Log out by clearing the context and localStorage
+    <Link href="/Login"></Link>
+  };
 
   return (
     <nav className="bg-black text-white flex justify-between items-center px-6 h-20 relative">
       {/* Logo & Name */}
-      <div className="flex items-center gap-3">
-        <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={55} height={55} className="rounded-full" />
-        <h2 className="text-xl font-bold">Bindi’s Cupcakery</h2>
-      </div>
+      <Link href="/"> 
+        <div className="flex items-center gap-3">
+          <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={55} height={55} className="rounded-full" />
+          <h2 className="text-xl font-bold">Bindi’s Cupcakery</h2>
+        </div>
+      </Link>
 
       {/* Search Bar */}
       <div className="relative">
@@ -65,11 +50,7 @@ const handleLogout = () => {
             All Collections ▼
           </button>
           {collectionsOpen && (
-            <div
-              className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10"
-              onMouseEnter={() => setCollectionsOpen(true)}
-              onMouseLeave={() => setCollectionsOpen(false)}
-            >
+            <div className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10">
               <Link href="/Cupcakes" className="block px-4 py-2 hover:bg-purple-800">Cupcakes</Link>
               <Link href="/Brownies" className="block px-4 py-2 hover:bg-purple-800">Brownies</Link>
               <Link href="/Cakes" className="block px-4 py-2 hover:bg-purple-800">Cakes</Link>
@@ -89,18 +70,20 @@ const handleLogout = () => {
             Custom Orders ▼
           </button>
           {ordersOpen && (
-            <div
-              className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10"
-              onMouseEnter={() => setOrdersOpen(true)}
-              onMouseLeave={() => setOrdersOpen(false)}
-            >
-              <Link href="/design-your-own" className="block px-4 py-2 hover:bg-purple-800">Design Your Own</Link>
-              <Link href="/choose-collection" className="block px-4 py-2 hover:bg-purple-800">Choose from Our Collection</Link>
+            <div className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10">
+              <Link href="/Design_Your_Own" className="block px-4 py-2 hover:bg-purple-800">Design Your Own</Link>
+              <Link href="/Choose_from_Our_Collection" className="block px-4 py-2 hover:bg-purple-800">Choose from Our Collection</Link>
             </div>
           )}
         </div>
 
-        <Link href="/contact">
+        <Link href="/About_Us">
+          <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
+            About Us
+          </button>
+        </Link>
+
+        <Link href="/Contact_Us">
           <button className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5">
             Contact Us
           </button>
@@ -113,14 +96,13 @@ const handleLogout = () => {
         </Link>
 
         {/* Conditional Buttons based on Login Status */}
-        {!auth ? (
+        {!localStorage.getItem("auth") ? (
           <>
             <Link href="/Register">
               <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
                 Register
               </button>
             </Link>
-
             <Link href="/Login">
               <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-5 py-2.5">
                 Login
