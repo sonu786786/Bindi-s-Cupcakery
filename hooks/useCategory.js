@@ -13,7 +13,6 @@ export default function useCategory() {
           const { data } = await axios.get(
             `http://localhost:4000/api/v1/category/get-category`
           );
-
           // Ensure data.category is an array before setting state
           if (Array.isArray(data?.category)) {
             setCategories(data.category);
