@@ -49,3 +49,23 @@ export const isAdmin = async (req, res, next) => {
       });
     }
   };
+
+
+export const Authenticated = async (req, res, next) => {
+    const token = req.header("Auth");
+  
+    if (!token) return res.json({ message: "Login first" });
+  
+    const decoded = JWT.verify(token, "!@#$%^&*()");
+  
+    const id = decoded.userId;
+  
+    let user = await user.findById(id);
+  
+    if (!user) return res.json({ message: "User not exist" });
+  
+    req.user = user;
+    next();
+  
+    // console.log(decoded)
+  };

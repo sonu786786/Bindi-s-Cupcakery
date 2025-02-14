@@ -6,15 +6,27 @@ import Image from "next/image";
 import { useAuth } from "@/Context/auth"; // Import the useAuth hook
 import { useRouter } from "next/navigation";
 import useCategory from "@/hooks/useCategory";
+import { useCart } from "@/Context/cart";
+
 
 const Navbar = () => {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const categories = useCategory(); // Fetch categories dynamically
+  const categories = useCategory();
   const [auth, login, logout] = useAuth();
   const router = useRouter();
+  const { cart } = useCart();
+
+  // const [cartCount, setCartCount] = useState(0);
+  const cartCount = cart.length;
+
+  // useEffect(() => {
+  //   // Fetch cart count from localStorage or global state
+  //   const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  //   setCartCount(cartItems.length);
+  // }, []);
 
   const handleLogout = () => {
     logout();
@@ -117,8 +129,20 @@ const Navbar = () => {
           </Link>
         </li>
 
+        {/* Add to Cart Button */}
+        <li>
+        <Link href="/cart" className="relative flex items-center">
+      <span className="text-white text-lg">🛒</span>
+      {cartCount > 0 && (
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+          {cartCount}
+        </span>
+      )}
+    </Link>
+        </li>
+
         {/* Conditional Login/Register or User Menu */}
-        {!auth?.user ? (
+        {!localStorage.getItem("auth") ? (
           <>
             <li>
               <Link
