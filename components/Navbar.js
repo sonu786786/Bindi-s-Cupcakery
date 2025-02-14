@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@/Context/auth"; // Import the useAuth hook
+import { useAuth } from "@/Context/auth";
 import { useRouter } from "next/navigation";
 import useCategory from "@/hooks/useCategory";
 
@@ -12,20 +12,42 @@ const Navbar = () => {
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const categories = useCategory(); // Fetch categories dynamically
+  const categories = useCategory();
   const [auth, login, logout] = useAuth();
   const router = useRouter();
+  const collectionsRef = useRef(null);
+  const ordersRef = useRef(null);
 
   const handleLogout = () => {
     logout();
     router.push("/Login");
   };
 
+  // Close dropdowns on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        collectionsRef.current &&
+        !collectionsRef.current.contains(event.target)
+      ) {
+        setCollectionsOpen(false);
+      }
+      if (ordersRef.current && !ordersRef.current.contains(event.target)) {
+        setOrdersOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className="bg-black text-white flex justify-between items-center px-6 h-20 relative">
       {/* Logo & Name */}
       <Link href="/">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 cursor-pointer">
           <Image
             src="/logo.jpg"
             alt="Bindi's Cupcakery"
@@ -52,7 +74,7 @@ const Navbar = () => {
       {/* Navigation Links */}
       <ul className="flex items-center gap-6">
         {/* All Collections - Dropdown */}
-        <li className="relative">
+        <li className="relative" ref={collectionsRef}>
           <span
             onClick={() => setCollectionsOpen(!collectionsOpen)}
             className="cursor-pointer text-white hover:text-purple-400"
@@ -60,12 +82,12 @@ const Navbar = () => {
             All Collections ▼
           </span>
           {collectionsOpen && (
-            <ul className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10">
+            <ul className="absolute left-0 mt-2 w-48 bg-gradient-to-br from-purple-700 to-purple-900 text-white rounded-lg shadow-lg z-10 transition-all ease-in-out">
               {categories.map((c) => (
                 <li key={c.slug}>
                   <Link
                     href={`/category/${c.slug}`}
-                    className="block px-4 py-2 hover:bg-purple-800"
+                    className="block px-4 py-2 hover:bg-purple-800 transition-all ease-in-out"
                   >
                     {c.name}
                   </Link>
@@ -76,7 +98,7 @@ const Navbar = () => {
         </li>
 
         {/* Custom Orders - Dropdown */}
-        <li className="relative">
+        <li className="relative" ref={ordersRef}>
           <span
             onClick={() => setOrdersOpen(!ordersOpen)}
             className="cursor-pointer text-white hover:text-purple-400"
@@ -84,11 +106,11 @@ const Navbar = () => {
             Custom Orders ▼
           </span>
           {ordersOpen && (
-            <ul className="absolute left-0 mt-2 w-48 bg-purple-700 text-white rounded-lg shadow-lg z-10">
+            <ul className="absolute left-0 mt-2 w-48 bg-gradient-to-br from-purple-700 to-purple-900 text-white rounded-lg shadow-lg z-10 transition-all ease-in-out">
               <li>
                 <Link
                   href="/Design_Your_Own"
-                  className="block px-4 py-2 hover:bg-purple-800"
+                  className="block px-4 py-2 hover:bg-purple-800 transition-all ease-in-out"
                 >
                   Design Your Own
                 </Link>
@@ -96,7 +118,7 @@ const Navbar = () => {
               <li>
                 <Link
                   href="/Choose_from_Our_Collection"
-                  className="block px-4 py-2 hover:bg-purple-800"
+                  className="block px-4 py-2 hover:bg-purple-800 transition-all ease-in-out"
                 >
                   Choose from Our Collection
                 </Link>
@@ -146,7 +168,7 @@ const Navbar = () => {
               {auth?.user?.name} ▼
             </span>
             {userMenuOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200">
+              <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 transition-all ease-in-out">
                 <li>
                   <Link
                     href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
@@ -159,7 +181,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-100"
+                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-100 transition-all ease-in-out"
                   >
                     Logout
                   </button>
