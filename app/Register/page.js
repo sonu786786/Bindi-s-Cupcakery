@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -39,10 +40,12 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black p-6">
-      <div className="bg-white/10 backdrop-blur-lg p-8 rounded-lg shadow-lg max-w-md w-full border border-white/20">
-        <h2 className="text-3xl font-bold text-center text-white mb-6">Create an Account</h2>
-        
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full border border-gray-200">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
+          Create an Account
+        </h2>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Input Fields */}
           {[
@@ -54,12 +57,12 @@ export default function Register() {
             { label: "Security Question (Answer)", type: "text", value: answer, setValue: setAnswer },
           ].map((field, index) => (
             <div key={index}>
-              <label className="block text-sm font-medium text-gray-300">{field.label}</label>
+              <label className="block text-sm font-medium text-gray-700">{field.label}</label>
               <input
                 type={field.type}
                 value={field.value}
                 onChange={(e) => field.setValue(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-black/50 text-white placeholder-gray-400"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-gray-900 placeholder-gray-500"
                 placeholder={`Enter ${field.label.toLowerCase()}...`}
                 required
               />
@@ -69,18 +72,18 @@ export default function Register() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 rounded-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Register
           </button>
         </form>
 
         {/* Already have an account? */}
-        <p className="text-center text-gray-400 text-sm mt-4">
+        <p className="text-center text-gray-600 text-sm mt-4">
           Already have an account?{" "}
-          <a href="/Login" className="text-purple-400 font-semibold hover:underline">
+          <Link href="/Login" className="text-blue-500 font-semibold hover:underline">
             Login here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-'use client'; // Ensure this is a client component
+"use client"; // Ensure this is a client component
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -20,13 +20,10 @@ const CreateCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) {
-      console.log("Error: No token found");
       return toast.error("Authentication failed. Please log in.");
     }
 
     try {
-      console.log("Submitting with token:", token);
-
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/category/create-category",
         { name },
@@ -34,15 +31,12 @@ const CreateCategory = () => {
       );
 
       if (data.success) {
-        console.log("Category created successfully");
         toast.success(`${name} is created`);
         getAllCategory(); // Refresh categories
       } else {
-        console.log("Error in category creation:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Request Error:", error);
       toast.error("Something went wrong while creating category.");
     }
   };
@@ -50,18 +44,15 @@ const CreateCategory = () => {
   // Get all categories
   const getAllCategory = async () => {
     try {
-      console.log("Fetching categories...");
-      const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category");
-
+      const { data } = await axios.get(
+        "http://localhost:4000/api/v1/category/get-category"
+      );
       if (data.success) {
-        console.log("Categories fetched successfully:", data.category);
         setCategories(data.category);
       } else {
-        console.log("Error fetching categories:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error fetching categories:", error);
       toast.error("Something went wrong while fetching categories.");
     }
   };
@@ -74,13 +65,10 @@ const CreateCategory = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!token) {
-      console.log("Error: No token found");
       return toast.error("Authentication failed. Please log in.");
     }
 
     try {
-      console.log("Updating category:", selected?._id, "New Name:", updatedName);
-
       const { data } = await axios.put(
         `http://localhost:4000/api/v1/category/update-category/${selected._id}`,
         { name: updatedName },
@@ -88,18 +76,15 @@ const CreateCategory = () => {
       );
 
       if (data.success) {
-        console.log("Category updated successfully");
         toast.success(`${updatedName} is updated`);
         setSelected(null);
         setUpdatedName("");
         setVisible(false);
         getAllCategory();
       } else {
-        console.log("Error updating category:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error updating category:", error);
       toast.error("Something went wrong while updating category.");
     }
   };
@@ -107,77 +92,110 @@ const CreateCategory = () => {
   // Delete category
   const handleDelete = async (pId) => {
     if (!token) {
-      console.log("Error: No token found");
       return toast.error("Authentication failed. Please log in.");
     }
 
     try {
-      console.log("Deleting category:", pId);
-
       const { data } = await axios.delete(
         `http://localhost:4000/api/v1/category/delete-category/${pId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data.success) {
-        console.log("Category deleted successfully");
         toast.success("Category is deleted");
         getAllCategory();
       } else {
-        console.log("Error deleting category:", data.message);
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error deleting category:", error);
       toast.error("Something went wrong while deleting category.");
     }
   };
 
   return (
-    <div className="container mx-auto p-6 bg-black text-white">
-      <div className="col-md-3">
-        <AdminMenu />
-      </div>
+    <div className="min-h-screen bg-white text-gray-900 p-6">
       <div className="flex">
+        {/* Sidebar */}
+        <div className="w-1/4 p-4">
+          <AdminMenu />
+        </div>
+
+        {/* Main Content */}
         <div className="w-3/4">
-          <h1 className="text-2xl font-semibold mb-4">Manage Category</h1>
-          <div className="p-4 w-1/2">
-            <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
-          </div>
-          <div className="w-full mt-4">
-            <table className="table-auto w-full border-collapse border border-gray-300">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2 border-b text-left">Name</th>
-                  <th className="px-4 py-2 border-b text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories?.map((c) => (
-                  <tr key={c._id}>
-                    <td className="px-4 py-2 border-b">{c.name}</td>
-                    <td className="px-4 py-2 border-b">
-                      <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                        onClick={() => {
-                          setVisible(true);
-                          setUpdatedName(c.name);
-                          setSelected(c);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-2"
-                        onClick={() => handleDelete(c._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+          <div className="bg-white shadow-md rounded-lg p-6">
+            <h1 className="text-2xl font-semibold text-gray-700 mb-4">Manage Categories</h1>
+
+            {/* Category Form */}
+            <div className="mb-6">
+              <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
+            </div>
+
+            {/* Categories Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full border border-gray-300 rounded-lg shadow-sm">
+                <thead className="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th className="px-6 py-3 border-b text-left">Category Name</th>
+                    <th className="px-6 py-3 border-b text-left">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {categories?.map((c) => (
+                    <tr key={c._id} className="border-b">
+                      <td className="px-6 py-3">{c.name}</td>
+                      <td className="px-6 py-3 flex gap-3">
+                        <button
+                          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                          onClick={() => {
+                            setVisible(true);
+                            setUpdatedName(c.name);
+                            setSelected(c);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                          onClick={() => handleDelete(c._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Edit Category Modal */}
+            {visible && (
+              <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                  <h2 className="text-xl font-semibold text-gray-700 mb-4">Update Category</h2>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                    value={updatedName}
+                    onChange={(e) => setUpdatedName(e.target.value)}
+                  />
+                  <div className="flex justify-end gap-3">
+                    <button
+                      className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition"
+                      onClick={() => setVisible(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                      onClick={handleUpdate}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>

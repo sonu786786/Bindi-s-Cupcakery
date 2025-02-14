@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../Context/auth";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,51 +19,51 @@ export default function Login() {
         email,
         password,
       });
-      console.log("response data",res.data);
-      console.log("response data 1",res.data.user);
-      console.log("response data 2",res.data.token);
-      
-      if(res){
+
+      if (res.data.success) {
         toast.success(res.data.message);
 
         setAuth({
-            
+          user: res.data.user,
+          token: res.data.token,
+        });
+
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
             user: res.data.user,
             token: res.data.token,
-          });
-        localStorage.setItem("auth", JSON.stringify({user: res.data.user,
-          token: res.data.token,}));
-        // localStorage.setItem("auth", JSON.stringify(res.data.token));
-        // navigate(location.state || '/');
-        console.log("setauth pass ho gya ji");
-        // redirect("/");
-        router.push('/')
-        
-    }
-    else{
-        toast.success(res.data.message)
-    }
+          })
+        );
+
+        router.push("/");
+      } else {
+        toast.error(res.data.message);
+      }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
     }
   };
-  
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black p-6">
-      <div className="bg-white/10 backdrop-blur-lg p-8 rounded-lg shadow-lg max-w-md w-full border border-white/20">
-        <h2 className="text-3xl font-bold text-center text-white mb-6">Welcome Back</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full border border-gray-200">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
+          Welcome Back
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-300">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-black/50 text-white placeholder-gray-400"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-gray-900 placeholder-gray-500"
               placeholder="Enter your email..."
               required
             />
@@ -70,12 +71,14 @@ export default function Login() {
 
           {/* Password Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-300">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-black/50 text-white placeholder-gray-400"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-gray-900 placeholder-gray-500"
               placeholder="Enter your password..."
               required
             />
@@ -84,22 +87,22 @@ export default function Login() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 rounded-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Log In
           </button>
         </form>
 
         {/* Forgot Password & Signup Links */}
-        <div className="text-center text-gray-400 text-sm mt-4">
-          <a href="/forgot-password" className="text-purple-400 hover:underline">
+        <div className="text-center text-gray-600 text-sm mt-4">
+          <Link href="/forgot-password" className="text-blue-500 hover:underline">
             Forgot Password?
-          </a>
+          </Link>
           <p className="mt-2">
             New here?{" "}
-            <a href="/Register" className="text-purple-400 font-semibold hover:underline">
+            <Link href="/Register" className="text-blue-500 font-semibold hover:underline">
               Create an account
-            </a>
+            </Link>
           </p>
         </div>
       </div>

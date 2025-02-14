@@ -42,34 +42,36 @@ const AdminOrders = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 p-6">
+    <div className="flex min-h-screen bg-white p-6">
       {/* Sidebar */}
-      <div className="col-md-3">
-            <AdminMenu />
-        </div>
+      <div className="w-1/4 pr-6">
+        <AdminMenu />
+      </div>
+
       {/* Main Content */}
       <div className="w-3/4 p-6">
-        <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 text-center mb-6">
           All Orders
         </h1>
 
         {orders?.map((order, index) => (
-          <div key={order._id} className="bg-white shadow-md rounded-lg p-4 mb-6">
-            <table className="w-full border-collapse border border-gray-300">
-              <thead className="bg-gray-200">
+          <div key={order._id} className="bg-gray-100 shadow-md rounded-lg p-6 mb-6">
+            {/* Order Details Table */}
+            <table className="w-full border-collapse border border-gray-300 bg-white rounded-lg overflow-hidden shadow-md">
+              <thead className="bg-gray-200 text-gray-800">
                 <tr className="text-left">
-                  <th className="p-2 border">#</th>
-                  <th className="p-2 border">Status</th>
-                  <th className="p-2 border">Buyer</th>
-                  <th className="p-2 border">Date</th>
-                  <th className="p-2 border">Payment</th>
-                  <th className="p-2 border">Quantity</th>
+                  <th className="p-3 border">#</th>
+                  <th className="p-3 border">Status</th>
+                  <th className="p-3 border">Buyer</th>
+                  <th className="p-3 border">Date</th>
+                  <th className="p-3 border">Payment</th>
+                  <th className="p-3 border">Quantity</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border">
-                  <td className="p-2 border">{index + 1}</td>
-                  <td className="p-2 border">
+                <tr className="border bg-white hover:bg-gray-50 transition">
+                  <td className="p-3 border">{index + 1}</td>
+                  <td className="p-3 border">
                     <Select
                       defaultValue={order?.status}
                       className="w-full"
@@ -82,37 +84,46 @@ const AdminOrders = () => {
                       ))}
                     </Select>
                   </td>
-                  <td className="p-2 border">{order?.buyer?.name}</td>
-                  <td className="p-2 border">{moment(order?.createdAt).fromNow()}</td>
-                  <td className="p-2 border">{order?.payment.success ? "Success" : "Failed"}</td>
-                  <td className="p-2 border">{order?.products?.length}</td>
+                  <td className="p-3 border">{order?.buyer?.name}</td>
+                  <td className="p-3 border">{moment(order?.createdAt).fromNow()}</td>
+                  <td className="p-3 border font-semibold">
+                    {order?.payment.success ? (
+                      <span className="text-green-600">Success</span>
+                    ) : (
+                      <span className="text-red-600">Failed</span>
+                    )}
+                  </td>
+                  <td className="p-3 border">{order?.products?.length}</td>
                 </tr>
               </tbody>
             </table>
 
             {/* Products List */}
             <div className="mt-4">
-              {order?.products?.map((product) => {
-                const imageUrl = `http://localhost:4000/api/v1/product/product-photo/${product._id}`;
-                return (
-                  <div
-                    key={product._id}
-                    className="flex items-center bg-gray-100 p-3 rounded-md shadow-md mb-2"
-                  >
-                    <img
-                      src={imageUrl}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover rounded-md"
-                      onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} // Fallback image if the image fails to load
-                    />
-                    <div className="ml-4">
-                      <p className="font-semibold">{product.name}</p>
-                      <p className="text-gray-500">{product.description.substring(0, 30)}...</p>
-                      <p className="text-gray-700 font-bold">₹{product.price}</p>
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">Products:</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {order?.products?.map((product) => {
+                  const imageUrl = `http://localhost:4000/api/v1/product/product-photo/${product._id}`;
+                  return (
+                    <div
+                      key={product._id}
+                      className="flex items-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300"
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover rounded-md"
+                        onError={(e) => (e.target.src = "/path/to/fallback-image.jpg")}
+                      />
+                      <div className="ml-4">
+                        <p className="font-semibold text-gray-900">{product.name}</p>
+                        <p className="text-gray-600">{product.description.substring(0, 30)}...</p>
+                        <p className="text-gray-800 font-bold">₹{product.price}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         ))}
