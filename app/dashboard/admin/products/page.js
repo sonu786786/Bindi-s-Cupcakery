@@ -44,7 +44,7 @@ const Products = () => {
         {products?.map((p) => (
           <Link
             key={p._id}
-            href={`/dashboard/admin/product/${p.slug}`} // Using Next.js Link for navigation
+            href={`http://localhost:4000/dashboard/admin/product/${p.slug}`} // Using Next.js Link for navigation
             passHref
           >
             <div className="card bg-gray-700 border border-gray-600 rounded-md p-4">
