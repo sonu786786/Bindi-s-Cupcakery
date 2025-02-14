@@ -2,3 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Set background color to black and text color to white globally */
+body {
+    background-color: black;
+    color: white;
+  }
+  
+  /* Adjust heading color for visibility */
+  h1, h4 {
+    color: #f0f0f0; /* Light gray */
+  }
+  
+  /* Card title */
+  .card-title {
+    color: #ffffff; /* White color */
+  }
+  
+  /* Card text */
+  .card-text {
+    color: #dcdcdc; /* Light gray */
+  }
+  
+  /* Button styles */
+  .btn {
+    color: white;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+  }
+  
+  /* Hover effect on buttons */
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Filter checkboxes/radios */
+  .ant-checkbox-wrapper, .ant-radio-wrapper {
+    color: #dcdcdc;
+  }
+  
+  /* Product price color */
+  .card-text {
+    color: #ffffff;
+  }
+  
