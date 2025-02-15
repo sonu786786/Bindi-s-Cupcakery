@@ -6,6 +6,7 @@ import { useCart } from "../../Context/cart";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import Link from "next/link";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -124,8 +125,6 @@ const HomePage = () => {
             RESET FILTERS
           </button>
         </div>
-
-        {/* Products Section */}
         <div className="md:w-3/4">
           <h1 className="text-4xl font-extrabold text-center text-blue-500">All Products</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">

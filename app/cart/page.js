@@ -1,4 +1,4 @@
-"use client"; // Ensure it's a client component
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { useCart } from "../../Context/cart";
@@ -13,7 +13,6 @@ const CartPage = () => {
     console.log("amount = ", amount);
 
     try {
-      // Create Razorpay Order
       const response = await fetch("http://localhost:4000/api/v1/payment/create-order", {
         method: "POST",
         body: JSON.stringify({
@@ -35,7 +34,7 @@ const CartPage = () => {
       console.log("Order Created: ", order);
 
       var options = {
-        key: "rzp_test_mZGFuX4QG8UG7y", // Replace with your actual Razorpay Key ID
+        key: "rzp_test_mZGFuX4QG8UG7y",
         amount: amount * 100,
         currency: "INR",
         name: "Acme Corp",
@@ -45,18 +44,17 @@ const CartPage = () => {
           console.log("Payment Successful: ", response);
 
           const orderDetails = {
-            userId: "67ae3b5bb1e1642a2f53011c", // Replace with dynamic user ID
+            userId: "67ae3b5bb1e1642a2f53011c",
             payStatus: "paid",
             orderId: order.id,
             paymentId: response.razorpay_payment_id,
             signature: response.razorpay_signature,
             amount: amount,
-            orderItems: cartArray, // Send the cart items
-            userShipping: auth.user, // User shipping details
+            orderItems: cartArray,
+            userShipping: auth.user,
             orderDate: new Date().toISOString(),
           };
 
-          // Send order details to backend
           const saveOrderRes = await fetch("http://localhost:4000/api/v1/payment/verify-payment", {
             method: "POST",
             body: JSON.stringify(orderDetails),
@@ -131,14 +129,11 @@ const CartPage = () => {
       </h1>
       <p className="text-center text-lg text-gray-600">
         {cartArray.length
-          ? `You have ${cartArray.length} items in your cart ${
-              auth?.token ? "" : " - please log in to checkout!"
-            }`
+          ? `You have ${cartArray.length} items in your cart `
           : "Your cart is empty."}
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 max-w-7xl mx-auto">
-        {/* Cart Items Section */}
         <div className="lg:col-span-2">
           {isCartLoaded ? (
             cartArray.map((p, index) => (
@@ -160,18 +155,26 @@ const CartPage = () => {
           )}
         </div>
 
-        {/* Cart Summary Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">Cart Summary</h2>
           <hr className="my-4" />
           <h4 className="text-lg font-medium text-gray-700">Total Amount: ₹{totalPrice()}</h4>
-          <button
-            className="w-full py-3 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 disabled:opacity-50"
-            onClick={(e) => paymentHandler(e, totalPrice())}
-            disabled={!auth?.token || cartArray.length === 0}
-          >
-            Proceed to Payment
-          </button>
+          {auth?.token ? (
+            <button
+              className="w-full py-3 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400"
+              onClick={(e) => paymentHandler(e, totalPrice())}
+              disabled={cartArray.length === 0}
+            >
+              Proceed to Payment
+            </button>
+          ) : (
+            <button
+              className="w-full py-3 mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onClick={() => router.push("/Login")}
+            >
+              Login First
+            </button>
+          )}
         </div>
       </div>
     </div>

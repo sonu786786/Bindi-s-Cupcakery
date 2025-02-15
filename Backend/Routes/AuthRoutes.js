@@ -1,8 +1,9 @@
 import express from 'express'
+import { requestOtp, verifyOtp } from "../Controllers/AuthController.js";
 import {
     registerController,
     loginController,
-    testController
+    testController,
     } 
 from "../Controllers/AuthController.js"
 import { isAdmin, requireSignIn } from '../Middlewares/AuthMiddleware.js'
@@ -22,6 +23,7 @@ router.post("/login",loginController)
 router.get("/test",requireSignIn, isAdmin, testController)
 
 
-
+router.post("/request-otp", requestOtp);
+router.post("/verify-otp", verifyOtp);
 
 export default router 
