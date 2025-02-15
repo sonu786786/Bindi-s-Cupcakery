@@ -2,6 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import ReviewForm from "../components/reveiwForm";
+import ReviewSlider from "../components/Reveiwslider";
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -131,6 +133,22 @@ export default function Home() {
           </button>
         </Link>
       </section>
+
+      {/* ⭐ Review Form Section - Before Testimonials */}
+      <section className="px-6 py-12 bg-gray-900 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-pink-400">
+          Share Your Experience 💬
+        </h2>
+        <p className="text-center text-gray-300 mt-2">
+          We value your feedback! Leave a review below.
+        </p>
+        <div className="mt-6">
+          <ReviewForm /> {/* ✅ Users can submit reviews here */}
+        </div>
+        <ReviewSlider />
+      </section>
+
+
     </div>
   );
 }

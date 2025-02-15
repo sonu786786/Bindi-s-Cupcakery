@@ -12,6 +12,7 @@ const AdminMenu = () => {
     { name: "Products", path: "/dashboard/admin/products" },
     { name: "Orders", path: "/dashboard/admin/orders" },
     { name: "Users", path: "/dashboard/admin/users" },
+    { name: "Review", path: "/dashboard/admin/reviews" },
   ];
 
   return (
