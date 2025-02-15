@@ -115,90 +115,72 @@ const CreateCategory = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 p-6">
       <div className="flex">
-        {/* Sidebar */}
-        <div className="w-1/4 p-4">
-          <AdminMenu />
-        </div>
+  <div className="w-3/4">
+    <h1 className="text-2xl font-semibold mb-4">Manage Category</h1>
+    <div className="p-4 w-1/2">
+      <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
+    </div>
+    <div className="w-full mt-4">
+      <table className="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border-b text-left">Name</th>
+            <th className="px-4 py-2 border-b text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories?.map((c) => (
+            <tr key={c._id}>
+              <td className="px-4 py-2 border-b">{c.name}</td>
+              <td className="px-4 py-2 border-b">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={() => {
+                    setVisible(true);
+                    setUpdatedName(c.name); // Set the current name to the updated name field
+                    setSelected(c); // Store the selected category for updating
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-2"
+                  onClick={() => handleDelete(c._id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 
-        {/* Main Content */}
-        <div className="w-3/4">
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h1 className="text-2xl font-semibold text-gray-700 mb-4">Manage Categories</h1>
+    {/* Display the update form if 'visible' is true */}
+    {visible && (
+  <div className="mt-4">
+    <h2 className="text-xl font-semibold mb-2 text-white">Update Category</h2>
+    <form onSubmit={handleUpdate}>
+      <input
+        type="text"
+        value={updatedName}
+        onChange={(e) => setUpdatedName(e.target.value)}
+        placeholder="Update category name"
+        className="border p-2 rounded-md w-full bg-gray-700 text-white placeholder-gray-400"
+      />
+      <button
+        type="submit"
+        className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+      >
+        Update
+      </button>
+    </form>
+  </div>
+)}
 
-            {/* Category Form */}
-            <div className="mb-6">
-              <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
-            </div>
+  </div>
+</div>
 
-            {/* Categories Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-300 rounded-lg shadow-sm">
-                <thead className="bg-gray-100 text-gray-700">
-                  <tr>
-                    <th className="px-6 py-3 border-b text-left">Category Name</th>
-                    <th className="px-6 py-3 border-b text-left">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categories?.map((c) => (
-                    <tr key={c._id} className="border-b">
-                      <td className="px-6 py-3">{c.name}</td>
-                      <td className="px-6 py-3 flex gap-3">
-                        <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
-                          onClick={() => {
-                            setVisible(true);
-                            setUpdatedName(c.name);
-                            setSelected(c);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
-                          onClick={() => handleDelete(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Edit Category Modal */}
-            {visible && (
-              <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-                  <h2 className="text-xl font-semibold text-gray-700 mb-4">Update Category</h2>
-                  <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md mb-4"
-                    value={updatedName}
-                    onChange={(e) => setUpdatedName(e.target.value)}
-                  />
-                  <div className="flex justify-end gap-3">
-                    <button
-                      className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition"
-                      onClick={() => setVisible(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-                      onClick={handleUpdate}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

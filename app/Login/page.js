@@ -23,19 +23,23 @@ export default function Login() {
       if (res.data.success) {
         toast.success(res.data.message);
 
+        // Save auth data in state
         setAuth({
           user: res.data.user,
           token: res.data.token,
         });
 
+        // Save auth data in localStorage
         localStorage.setItem(
           "auth",
-          JSON.stringify({
-            user: res.data.user,
-            token: res.data.token,
-          })
+          JSON.stringify({ user: res.data.user, token: res.data.token })
         );
 
+        // Save user ID and name separately
+        localStorage.setItem("user_id", res.data.user._id);
+        localStorage.setItem("user_name", res.data.user.name);
+
+        // Redirect to home page
         router.push("/");
       } else {
         toast.error(res.data.message);

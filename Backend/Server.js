@@ -6,7 +6,9 @@ import authRoutes from "./Routes/AuthRoutes.js";
 import payment from "./Routes/paymentRoutes.js"
 import categoryRoutes from "./Routes/CategoryRoutes.js"
 import productRoutes from "./Routes/ProductRoutes.js"
+import reviewRoutes from './Routes/reveiwRoutes.js';
 import morgan from "morgan";
+import bodyParser from "body-parser";
 
 const app = express();
 
@@ -29,6 +31,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cors())
+app.use(bodyParser.json()); // Ensures JSON requests are properly parsed
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(
 //     cors({
 //       origin: "http://localhost:3000", // Allow frontend URL
@@ -42,6 +46,7 @@ app.use(cors())
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/category",categoryRoutes)
 app.use("/api/v1/product",productRoutes)
+app.use('/api/v1/reviews', reviewRoutes);
 // Use the payment routes
 app.use('/api/v1/payment', payment);
 app.get("/", (req, res) => {
