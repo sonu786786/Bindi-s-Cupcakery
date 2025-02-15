@@ -165,23 +165,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 px-6 bg-gray-100 text-center">
-        <h2 className="text-4xl font-bold text-pink-600">Customer Love ❤️</h2>
-        <div className="mt-8 space-y-6">
-          {[
-            { name: "Priya Sharma", review: "Absolutely delicious cupcakes! Best in town." },
-            { name: "Rohan Mehta", review: "Loved the red velvet cupcake. Will order again!" },
-            { name: "Ananya Patel", review: "Perfectly baked and fresh. Highly recommended!" },
-          ].map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-lg p-6 max-w-lg mx-auto shadow-md border border-gray-200">
-              <p className="text-gray-700">"{testimonial.review}"</p>
-              <h4 className="mt-2 font-semibold text-pink-600">{testimonial.name}</h4>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-pink-500 text-center text-white">
         <h2 className="text-4xl font-bold">Craving Something Sweet?</h2>
@@ -193,19 +176,25 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* ⭐ Review Form Section - Before Testimonials */}
-      <section className="px-6 py-12 bg-gray-900 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-pink-400">
-          Share Your Experience 💬
-        </h2>
-        <p className="text-center text-gray-300 mt-2">
-          We value your feedback! Leave a review below.
-        </p>
-        <div className="mt-6">
-          <ReviewForm /> {/* ✅ Users can submit reviews here */}
-        </div>
-        <ReviewSlider />
-      </section>
+    {/* ⭐ Review Form Section - Before Testimonials */}
+<section className="px-6 py-12 bg-pink-100 rounded-lg shadow-md">
+  <h2 className="text-3xl font-bold text-center text-pink-600">
+    Share Your Experience 💬
+  </h2>
+  <p className="text-center text-gray-700 mt-2">
+    We value your feedback! Leave a review below.
+  </p>
+
+  <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+    <ReviewForm /> {/* ✅ Users can submit reviews here */}
+  </div>
+
+  {/* ⭐ Testimonial Slider with subtle background and padding */}
+  <div className="mt-10 p-6 bg-white rounded-lg shadow-md">
+    <ReviewSlider />
+  </div>
+</section>
+
 
 
     </div>

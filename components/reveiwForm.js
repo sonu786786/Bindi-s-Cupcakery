@@ -13,32 +13,32 @@ const ReviewForm = () => {
     setMessage(null);
 
     const user_id = localStorage.getItem("user_id");
-    const user_name = localStorage.getItem("user_name"); // Get the user name from localStorage
-    
+    const user_name = localStorage.getItem("user_name");
+
     if (!user_id || user_id.length !== 24) {
       setMessage("Invalid user ID. Please log in.");
       return;
     }
-  
-    const reviewData = { 
-      review_text: reviewText, 
-      rating: Number(rating), 
+
+    const reviewData = {
+      review_text: reviewText,
+      rating: Number(rating),
       user_id,
-      user_name // Include the user name in the review data
+      user_name,
     };
-  
+
     console.log("Submitting Review Data:", reviewData);
-  
+
     try {
       const response = await fetch("http://localhost:4000/api/v1/reviews/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewData),
       });
-  
+
       const data = await response.json();
       console.log("Server Response:", data);
-  
+
       if (response.ok) {
         setMessage("Review submitted successfully!");
         setReviewText("");
@@ -51,30 +51,30 @@ const ReviewForm = () => {
       setMessage("Network error. Please try again.");
     }
   };
-  
+
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-900 p-4 rounded-lg shadow-lg max-w-sm mx-auto">
-      <h2 className="text-white text-lg font-semibold mb-2 text-center">Leave a Review</h2>
-      
+    <form onSubmit={handleSubmit} className="bg-pink-100 p-6 rounded-lg shadow-md max-w-md mx-auto">
+      <h2 className="text-gray-800 text-xl font-semibold mb-4 text-center">Leave a Review</h2>
+
       <textarea
-        className="w-full p-2 border border-gray-700 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-3 border border-gray-300 bg-white text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
         placeholder="Write your review..."
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}
         required
       ></textarea>
 
-      {/* Star Rating System */}
-      <div className="flex justify-center mt-3 mb-2">
+      {/* ⭐ Star Rating System */}
+      <div className="flex justify-center mt-3 mb-4">
         {[...Array(5)].map((_, index) => {
           const starValue = index + 1;
           return (
             <FaStar
               key={index}
               className={`cursor-pointer transition-colors duration-200 ${
-                starValue <= (hover || rating) ? "text-yellow-400" : "text-gray-500"
+                starValue <= (hover || rating) ? "text-yellow-500" : "text-gray-400"
               }`}
-              size={24}
+              size={28}
               onMouseEnter={() => setHover(starValue)}
               onMouseLeave={() => setHover(0)}
               onClick={() => setRating(starValue)}
@@ -83,11 +83,14 @@ const ReviewForm = () => {
         })}
       </div>
 
-      <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-500 transition">
+      <button
+        type="submit"
+        className="bg-pink-500 text-white p-3 rounded w-full hover:bg-pink-400 transition"
+      >
         Submit Review
       </button>
 
-      {message && <p className="mt-2 text-center text-green-400">{message}</p>}
+      {message && <p className="mt-3 text-center text-green-600 font-medium">{message}</p>}
     </form>
   );
 };

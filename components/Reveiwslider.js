@@ -22,7 +22,8 @@ const ReviewSlider = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <h2 className="text-center text-2xl font-bold mb-6 text-white">Customer Reviews</h2>
+      <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">Customer Reviews</h2>
+      
       {reviews.length > 0 ? (
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -32,22 +33,21 @@ const ReviewSlider = () => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
-          className="bg-gray-800 p-6 rounded-lg shadow-lg"
+          className="bg-pink-100 p-6 rounded-lg shadow-md"
         >
           {reviews.map((review, index) => (
-            <SwiperSlide key={`${review._id}-${index}`} className="text-center text-white">
+            <SwiperSlide key={`${review._id}-${index}`} className="text-center text-gray-800">
               <p className="text-lg italic">"{review.review_text}"</p>
               <p className="mt-2 font-semibold">- {review.user_id?.name || "Anonymous"}</p>
-              <p className="mt-1 text-yellow-400">⭐ {review.rating} / 5</p>
+              <p className="mt-1 text-yellow-500">⭐ {review.rating} / 5</p>
             </SwiperSlide>
           ))}
         </Swiper>
       ) : (
-        <p className="text-center text-white">No reviews yet.</p>
+        <p className="text-center text-gray-800">No reviews yet.</p>
       )}
     </div>
   );
 };
 
 export default ReviewSlider;
-
