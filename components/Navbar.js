@@ -12,8 +12,9 @@ const Navbar = () => {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   const collectionsRef = useRef(null);
   const ordersRef = useRef(null);
   const userMenuRef = useRef(null);
@@ -53,146 +54,125 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white text-black flex justify-between items-center px-6 h-20 relative shadow-md">
-      {/* Logo & Name */}
-      <Link href="/">
-        <div className="flex items-center gap-3 cursor-pointer">
-          <Image
-            src="/logo.jpg"
-            alt="Bindi's Cupcakery"
-            width={55}
-            height={55}
-            className="rounded-full"
+    <nav className="bg-white text-black shadow-md">
+      <div className="flex justify-between items-center px-6 h-20 relative">
+        
+        {/* Left Side: Logo */}
+        <Link href="/" className="flex items-center gap-3">
+          <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={50} height={50} className="rounded-full" />
+          <h2 className="text-xl font-bold hidden md:block">Bindi’s Cupcakery</h2>
+        </Link>
+
+        {/* Center: Search Bar */}
+        <div className="relative flex-1 max-w-xs mx-4">
+          <input
+            type="text"
+            placeholder="Search"
+            className="px-4 py-2 text-black border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
           />
-          <h2 className="text-xl font-bold">Bindi’s Cupcakery</h2>
+          <button className="absolute right-3 top-2 text-gray-500 hover:text-gray-700">
+            🔍
+          </button>
         </div>
-      </Link>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 text-black border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-64"
-        />
-        <button className="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
-          🔍
-        </button>
-      </div>
+        {/* Right Side: Hamburger Menu (Mobile) */}
+        <button className="md:hidden text-2xl" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
 
-      {/* Navigation Links */}
-      <ul className="flex items-center gap-6">
-        {/* All Collections - Dropdown (2 Columns) */}
-        <li className="relative" ref={collectionsRef}>
-          <span
-            onClick={() => setCollectionsOpen(!collectionsOpen)}
-            className="cursor-pointer hover:text-purple-500"
-          >
-            All Collections ▼
-          </span>
-          {collectionsOpen && (
-            <ul className="absolute left-0 mt-2 w-64 bg-white text-black rounded-lg shadow-lg z-50 grid grid-cols-2 gap-2 p-2 border border-gray-200">
-              {categories.map((c) => (
-                <li key={c.slug} className="px-4 py-2 hover:bg-gray-100 transition-all">
-                  <Link href={`/category/${c.slug}`}>{c.name}</Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-
-        {/* Custom Orders - Dropdown */}
-        <li className="relative" ref={ordersRef}>
-          <span
-            onClick={() => setOrdersOpen(!ordersOpen)}
-            className="cursor-pointer hover:text-purple-500"
-          >
-            Custom Orders ▼
-          </span>
-          {ordersOpen && (
-            <ul className="absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50 border border-gray-200">
-              <li className="px-4 py-2 hover:bg-gray-100 transition-all">
-                <Link href="/Design_Your_Own">Design Your Own</Link>
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 transition-all">
-                <Link href="/Choose_from_Our_Collection">Choose from Our Collection</Link>
-              </li>
-            </ul>
-          )}
-        </li>
-
-        <li>
-          <Link href="/About_Us" className="hover:text-purple-500">
-            About Us
-          </Link>
-        </li>
-
-        <li>
-          <Link href="/Contact_Us" className="hover:text-purple-500">
-            Contact Us
-          </Link>
-        </li>
-
-        {/* Add to Cart Button */}
-        <li>
-          <Link href="/cart" className="relative flex items-center">
-            <span className="text-xl">🛒</span>
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-                {cartCount}
-              </span>
-            )}
-          </Link>
-        </li>
-
-        {/* Login/Register or User Menu */}
-        {!isAuthenticated ? (
-          <>
-            <li>
-              <Link
-                href="/Register"
-                className="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition-all"
-              >
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/Login"
-                className="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition-all"
-              >
-                Login
-              </Link>
-            </li>
-          </>
-        ) : (
-          <li className="relative" ref={userMenuRef}>
-            <span
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="cursor-pointer hover:text-purple-500"
-            >
-              {auth?.user?.name} ▼
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex items-center gap-6">
+          {/* All Collections Dropdown */}
+          <li className="relative" ref={collectionsRef}>
+            <span onClick={() => setCollectionsOpen(!collectionsOpen)} className="cursor-pointer hover:text-purple-500">
+              All Collections ▼
             </span>
-            {userMenuOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg border border-gray-200 z-50">
-                <li className="px-4 py-2 hover:bg-gray-100">
-                  <Link href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}>
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100"
-                  >
-                    Logout
-                  </button>
-                </li>
+            {collectionsOpen && (
+              <ul className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50 grid grid-cols-2 gap-2 p-2 border border-gray-200">
+                {categories.map((c) => (
+                  <li key={c.slug} className="px-4 py-2 hover:bg-gray-100 transition-all">
+                    <Link href={`/category/${c.slug}`}>{c.name}</Link>
+                  </li>
+                ))}
               </ul>
             )}
           </li>
-        )}
-      </ul>
+
+          <li><Link href="/About_Us" className="hover:text-purple-500">About Us</Link></li>
+          <li><Link href="/Contact_Us" className="hover:text-purple-500">Contact Us</Link></li>
+
+          {/* Cart */}
+          <li>
+            <Link href="/cart" className="relative flex items-center">
+              <span className="text-xl">🛒</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </li>
+
+          {/* User Menu */}
+          {!isAuthenticated ? (
+            <>
+              <li><Link href="/Register" className="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition-all">Register</Link></li>
+              <li><Link href="/Login" className="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition-all">Login</Link></li>
+            </>
+          ) : (
+            <li className="relative" ref={userMenuRef}>
+              <span onClick={() => setUserMenuOpen(!userMenuOpen)} className="cursor-pointer hover:text-purple-500">
+                {auth?.user?.name} ▼
+              </span>
+              {userMenuOpen && (
+                <ul className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                  <li className="px-4 py-2 hover:bg-gray-100">
+                    <Link href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}>Dashboard</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-100">
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </li>
+          )}
+        </ul>
+      </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <ul className="md:hidden bg-white p-4 border-t shadow-lg">
+          <li className="relative">
+            <span onClick={() => setCollectionsOpen(!collectionsOpen)} className="block py-2 cursor-pointer">
+              All Collections ▼
+            </span>
+            {collectionsOpen && (
+              <ul className="bg-gray-100 p-2 rounded-md">
+                {categories.map((c) => (
+                  <li key={c.slug} className="py-2">
+                    <Link href={`/category/${c.slug}`} className="block">{c.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+
+          <li><Link href="/About_Us" className="block py-2">About Us</Link></li>
+          <li><Link href="/Contact_Us" className="block py-2">Contact Us</Link></li>
+
+          {!isAuthenticated ? (
+            <>
+              <li><Link href="/Register" className="block py-2">Register</Link></li>
+              <li><Link href="/Login" className="block py-2">Login</Link></li>
+            </>
+          ) : (
+            <>
+              <li><Link href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`} className="block py-2">Dashboard</Link></li>
+              <li><button onClick={handleLogout} className="block py-2 text-red-600">Logout</button></li>
+            </>
+          )}
+        </ul>
+      )}
     </nav>
   );
 };

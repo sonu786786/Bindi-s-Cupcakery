@@ -11,7 +11,7 @@ const Footer = () => {
         
         {/* Column 1: Branding & Description */}
         <div>
-          <h2 className="text-2xl font-bold text-purple-600">Bindi's Cupcakery 🍰</h2>
+          <Link href="/"><h2 className="text-2xl font-bold text-purple-600">Bindi's Cupcakery 🍰</h2></Link>
           <p className="text-sm mt-2 text-gray-600">
             Homemade, eggless, and preservative-free desserts made with love in Surat.
           </p>

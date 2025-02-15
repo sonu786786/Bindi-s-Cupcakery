@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(0);
-  const images = ["/cake.jpg", "/hp_img2.jpg", "/hp_img3.jpg", "/hp_img4.jpg"];
+  const images = ["/cake.jpg", "/hp_img2.jpg", "/hp_img3.jpg", "/Rose Pistachio Cranberry Truffle.jpg"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,10 +44,63 @@ export default function Home() {
         </div>
       </section>
 
+    {/* Feature Highlights Section */}
+<section className="py-16 bg-gradient-to-b from-pink-50 to-white">
+  <div className="container mx-auto px-6 text-center">
+    <h2 className="text-3xl font-bold text-pink-600 mb-10">Why Choose Bindi’s Cupcakery?</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {[
+        {
+          title: "100% Vegetarian & Preservative-Free",
+          description: "Enjoy homemade treats made with natural ingredients, completely eggless and free from preservatives.",
+          img: "/cake.png", // Update with actual icon
+        },
+        {
+          title: "Wide Range of Desserts",
+          description: "From ice creams to cupcakes, brownies, and cakes, we offer a variety of delicious options for every craving.",
+          img: "/sweets.png", // Update with actual icon
+        },
+        {
+          title: "Customizable Hampers",
+          description: "Personalize dessert hampers for birthdays, weddings, and special occasions.",
+          img: "/hamper.png", // Update with actual icon
+        },
+        {
+          title: "Seamless Ordering",
+          description: "Scan our WhatsApp QR code to place an order instantly and enjoy quick pickups from our cloud kitchen.",
+          img: "/order.png", // Update with actual icon
+        },
+       
+      ].map((item, index) => (
+        <div
+          key={index}
+          className="flex flex-col items-center bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105"
+        >
+          <div className="w-16 h-16 mb-4">
+            <Image
+              src={item.img}
+              alt={item.title}
+              width={64}
+              height={64}
+              className="object-contain"
+            />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+          <p className="text-sm text-gray-600 mt-2">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+
       {/* Our Products Section */}
       <section className="py-16 bg-gray-100 px-6 text-center">
         <h2 className="text-4xl font-bold text-pink-600">Our Products 🍪</h2>
-        <p className="mt-2 text-gray-700">Indulge in our delicious range of sweet treats.</p>
+        <p className="mt-2 text-gray-700">
+          Indulge in our delicious range of sweet treats.
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8">
           {[
@@ -125,7 +178,7 @@ export default function Home() {
       <section className="py-16 bg-pink-500 text-center text-white">
         <h2 className="text-4xl font-bold">Craving Something Sweet?</h2>
         <p className="mt-2 text-lg">Order now and satisfy your taste buds! 🍰</p>
-        <Link href="/shop">
+        <Link href="/products">
           <button className="mt-6 bg-white text-pink-600 font-bold py-3 px-8 rounded-full text-lg transition hover:bg-gray-200">
             Explore Menu
           </button>
