@@ -8,7 +8,7 @@ import WhatsAppQR  from "../components/WhatsappQR"
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(0);
-  const images = ["/cake.jpg", "/hp_img2.jpg", "/hp_img3.jpg", "/Rose Pistachio Cranberry Truffle.jpg"];
+  const images = ["/hpcakefinal.jfif", "/hp_img2.jpg", "/hp_img3.jpg", "/Rose Pistachio Cranberry Truffle.jpg"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,22 +61,22 @@ export default function Home() {
         {
           title: "100% Vegetarian & Preservative-Free",
           description: "Enjoy homemade treats made with natural ingredients, completely eggless and free from preservatives.",
-          img: "/cake.png", // Update with actual icon
+          img: "/cake.png", 
         },
         {
           title: "Wide Range of Desserts",
           description: "From ice creams to cupcakes, brownies, and cakes, we offer a variety of delicious options for every craving.",
-          img: "/sweets.png", // Update with actual icon
+          img: "/sweets.png", 
         },
         {
           title: "Customizable Hampers",
           description: "Personalize dessert hampers for birthdays, weddings, and special occasions.",
-          img: "/hamper.png", // Update with actual icon
+          img: "/hamper.png", 
         },
         {
           title: "Seamless Ordering",
           description: "Scan our WhatsApp QR code to place an order instantly and enjoy quick pickups from our cloud kitchen.",
-          img: "/order.png", // Update with actual icon
+          img: "/order.png", 
         },
        
       ].map((item, index) => (
@@ -103,67 +103,71 @@ export default function Home() {
 
 
 
-      {/* Our Products Section */}
-      <section className="py-16 bg-gray-100 px-6 text-center">
-        <h2 className="text-4xl font-bold text-pink-600">Our Products 🍪</h2>
-        <p className="mt-2 text-gray-700">
-          Indulge in our delicious range of sweet treats.
-        </p>
+   {/* Our Products Section */}
+<section className="py-16 px-6 text-center bg-gradient-to-b from-gray-50 to-gray-100">
+  <h2 className="text-4xl font-bold text-pink-600 tracking-wide">Our Products 🍪</h2>
+  <p className="mt-2 text-gray-700 text-lg">Indulge in our delicious range of sweet treats.</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-          {[
-            { name: "Cakes", img: "/cakes.jpg", link: "/cakes" },
-            { name: "Brownies", img: "/brownies.jpg", link: "/brownies" },
-            { name: "Desserts & Cupcakes", img: "/cupcakes.jpg", link: "/desserts" },
-            { name: "Pastries", img: "/pastries.jpg", link: "/pastries" },
-          ].map((item, index) => (
-            <Link key={index} href={item.link} className="group">
-              <div className="relative overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <Image
-                  src={item.img}
-                  alt={item.name}
-                  width={300}
-                  height={200}
-                  className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                  <span className="text-xl font-bold text-white">{item.name}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-10">
+    {[
+      { name: "Cakes", img: "/hpcakeproduct.jpeg", link: "/category/cakes" },
+      { name: "Brownies", img: "/hpbrowniesproduct.jfif", link: "/category/brownies" },
+      { name: "Cookies", img: "/hpcookiesproduct1.jfif", link: "/category/cookies" },
+      { name: "Truffle", img: "/hptruffleproduct.jfif", link: "/category/truffle" },
+    ].map((item, index) => (
+      <Link key={index} href={item.link} className="group relative block rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+        <Image
+          src={item.img}
+          alt={item.name}
+          width={300}
+          height={220}
+          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="text-2xl font-semibold text-white">{item.name}</span>
         </div>
+      </Link>
+    ))}
+  </div>
 
-        <Link href="/products">
-          <button className="mt-8 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg transition">
-            View More
-          </button>
-        </Link>
-      </section>
+  <Link href="/products">
+    <button className="mt-10 px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold rounded-full text-lg shadow-md hover:shadow-lg transition-all">
+      View More
+    </button>
+  </Link>
+</section>
 
-      {/* Best Sellers */}
-      <section className="py-16 bg-white px-6 text-center">
-        <h2 className="text-4xl font-bold text-pink-600">Best Sellers 🔥</h2>
-        <div className="flex flex-wrap justify-center gap-8 mt-8">
-          {[
-            { name: "Red Velvet Cupcake", price: "₹199", img: "/red_velvet.jpg" },
-            { name: "Choco Lava Cake", price: "₹249", img: "/lava_cake.jpg" },
-            { name: "Classic Brownie", price: "₹149", img: "/classic_brownie.jpg" },
-          ].map((item, index) => (
-            <div key={index} className="w-64 bg-gray-100 shadow-lg rounded-lg p-4 border border-gray-200">
-              <Image
-                src={item.img}
-                alt={item.name}
-                width={250}
-                height={200}
-                className="rounded-md"
-              />
-              <h3 className="mt-4 text-xl font-semibold text-gray-900">{item.name}</h3>
-              <p className="text-pink-600 font-bold">{item.price}</p>
-            </div>
-          ))}
+
+    {/* Best Sellers */}
+<section className="py-16 px-6 text-center bg-gradient-to-b from-white to-gray-50">
+  <h2 className="text-4xl font-bold text-pink-600 tracking-wide">Best Sellers 🔥</h2>
+  
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-10">
+    {[
+      { name: "Dark Chocolate Hazelnut Brownie", price: "₹219", img: "/brownie_best.jpg" },
+      { name: "Rose Pistachio Cranberry Truffle", price: "₹169", img: "/trufflebest.jpg" },
+      { name: "Choco Dip Cookies 🍪🍫", price: "₹199", img: "/chocodipcookiesbest.jpg" },
+    ].map((item, index) => (
+      <div 
+        key={index} 
+        className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 transform transition duration-300 hover:shadow-lg hover:scale-105"
+      >
+        <Image
+          src={item.img}
+          alt={item.name}
+          width={300}
+          height={220}
+          className="w-full h-56 object-cover"
+        />
+        <div className="p-5 text-center">
+          <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+          <p className="text-pink-600 font-bold text-lg">{item.price}</p>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* Call to Action */}
       <section className="py-16 bg-pink-500 text-center text-white">

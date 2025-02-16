@@ -114,9 +114,16 @@ const CreateCategory = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 p-6">
+      
       <div className="flex">
+        {/* Sidebar */}
+      <div className="w-1/4 p-6 bg-gray-100 min-h-screen shadow-md">
+        <AdminMenu />
+      </div>
   <div className="w-3/4">
-    <h1 className="text-2xl font-semibold mb-4">Manage Category</h1>
+    <h1 className="text-2xl text-black
+    
+    font-semibold mb-4">Manage Category</h1>
     <div className="p-4 w-1/2">
       <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
     </div>

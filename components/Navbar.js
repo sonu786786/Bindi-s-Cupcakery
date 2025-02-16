@@ -34,18 +34,6 @@ const Navbar = () => {
     router.push("/Login");
   };
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (collectionsRef.current && !collectionsRef.current.contains(event.target)) {
@@ -66,36 +54,33 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white text-black shadow-md">
+    <nav className="bg-white text-black shadow-md sticky top-0 z-50">
       <div className="flex justify-between items-center px-6 h-20 relative">
         
         {/* Left Side: Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={50} height={50} className="rounded-full" />
-          <h2 className="text-xl font-bold hidden md:block">Bindi’s Cupcakery</h2>
+          <Image src="/logo.jpg" alt="Bindi's Cupcakery" width={200} height={20} className="rounded-full" />
         </Link>
 
-       {/* Center: Search Bar */}
-<div className="relative flex-1 max-w-xs mx-4">
-  <input
-    type="text"
-    placeholder="Search"
-    className="px-4 py-2 pr-10 text-black border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
-  />
-  <img 
-    src="/search.png" 
-    alt="Search Icon" 
-    className="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2"
-  />
-</div>
-
+        {/* Center: Search Bar */}
+        <div className="relative flex-1 max-w-xs mx-4">
+          <input
+            type="text"
+            placeholder="Search"
+            className="px-4 py-2 pr-10 text-black border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
+          />
+          <img 
+            src="/search.png" 
+            alt="Search Icon" 
+            className="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2"
+          />
+        </div>
 
         {/* Right Side: Hamburger Menu (Mobile) */}
         <button className="md:hidden text-2xl" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex items-center gap-6">
-          {/* All Collections Dropdown */}
           <li className="relative" ref={collectionsRef}>
             <span onClick={() => setCollectionsOpen(!collectionsOpen)} className="cursor-pointer hover:text-purple-500">
               All Collections ▼
@@ -110,11 +95,8 @@ const Navbar = () => {
               </ul>
             )}
           </li>
-
           <li><Link href="/About_Us" className="hover:text-purple-500">About Us</Link></li>
           <li><Link href="/Contact_Us" className="hover:text-purple-500">Contact Us</Link></li>
-
-          {/* Cart */}
           <li>
             <Link href="/cart" className="relative flex items-center">
               <span className="text-xl">🛒</span>
@@ -125,8 +107,6 @@ const Navbar = () => {
               )}
             </Link>
           </li>
-
-          {/* User Menu */}
           {!isAuthenticated ? (
             <>
               <li><Link href="/Register" className="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition-all">Register</Link></li>
@@ -153,41 +133,6 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <ul className="md:hidden bg-white p-4 border-t shadow-lg">
-          <li className="relative">
-            <span onClick={() => setCollectionsOpen(!collectionsOpen)} className="block py-2 cursor-pointer">
-              All Collections ▼
-            </span>
-            {collectionsOpen && (
-              <ul className="bg-gray-100 p-2 rounded-md">
-                {categories.map((c) => (
-                  <li key={c.slug} className="py-2">
-                    <Link href={`/category/${c.slug}`} className="block">{c.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-
-          <li><Link href="/About_Us" className="block py-2">About Us</Link></li>
-          <li><Link href="/Contact_Us" className="block py-2">Contact Us</Link></li>
-
-          {!isAuthenticated ? (
-            <>
-              <li><Link href="/Register" className="block py-2">Register</Link></li>
-              <li><Link href="/Login" className="block py-2">Login</Link></li>
-            </>
-          ) : (
-            <>
-              <li><Link href={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`} className="block py-2">Dashboard</Link></li>
-              <li><button onClick={handleLogout} className="block py-2 text-red-600">Logout</button></li>
-            </>
-          )}
-        </ul>
-      )}
     </nav>
   );
 };
