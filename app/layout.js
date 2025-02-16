@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/Context/auth"; // Import AuthProvider
 import { CartProvider } from "@/Context/cart"; // Import CartProvider
+import { SearchProvider } from "../Context/search"; 
 
 // Load custom fonts
 const geistSans = localFont({
@@ -47,6 +48,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           {/* Wrap with CartProvider for cart context */}
           <CartProvider>
+          <SearchProvider>
             <Navbar />
             <Toaster position="top-right" /> {/* Added Toaster here */}
             <main className="min-h-[82vh]">
@@ -54,6 +56,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
             <Footer />
+            </SearchProvider>
           </CartProvider>
         </AuthProvider>
       </body>

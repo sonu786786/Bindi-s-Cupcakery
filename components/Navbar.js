@@ -26,12 +26,24 @@ const Navbar = () => {
   const cartCount = cart.length;
 
   useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("auth"));
-  }, []);
+    setIsAuthenticated(!!auth?.user);
+  }, [auth]);
 
   const handleLogout = () => {
     logout();
     router.push("/Login");
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   useEffect(() => {

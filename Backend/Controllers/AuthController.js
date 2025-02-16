@@ -1,7 +1,12 @@
 import userModel from "../Models/UserModels.js";
 import { comparePassword, hashPassword } from "../Helpher/AuthHelpher.js";
 import JWT from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import otpGenerator from "otp-generator";
+import bcrypt from "bcrypt";
 
+
+const otpStore = new Map();
 
 
 // REGISTER CONTROLLER
@@ -133,3 +138,74 @@ export const loginController = async (req, res) => {
 export const testController = (req,res) =>{
     res.send("protected routes")
   }
+
+
+
+// Request OTP
+export const requestOtp = async (req, res) => {
+  const { email } = req.body;
+  const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+
+  // Normalize email (trim spaces, lowercase)
+  const userEmail = email.trim().toLowerCase();
+
+  otpStore.set(userEmail, otp);
+  console.log("Stored OTP for:", userEmail, "OTP:", otp);
+  console.log("Current OTP Store:", otpStore);
+
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPass = process.env.ADMIN_EMAIL_PASS;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: adminEmail, pass: adminPass },
+  });
+
+  const mailOptions = {
+    from: adminEmail,
+    to: email,
+    subject: "Your OTP for Password Reset",
+    text: `Your OTP is: ${otp}`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: "OTP sent successfully" });
+  } catch (error) {
+    console.error("Failed to send OTP:", error);
+    res.status(500).json({ success: false, message: "Failed to send OTP" });
+  }
+};
+
+
+// Verify OTP & Reset Password
+export const verifyOtp = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  // Normalize email
+  const userEmail = email.trim().toLowerCase();
+
+  console.log("OTP Store contents:", otpStore);
+  console.log("Checking OTP for email:", userEmail);
+  console.log("Stored OTP:", otpStore.get(userEmail));
+  console.log("Received OTP:", otp);
+
+  const storedOtp = otpStore.get(userEmail);
+
+  if (!storedOtp) {
+    return res.status(400).json({ success: false, message: "OTP expired or not requested" });
+  }
+
+  if (storedOtp !== otp) {
+    return res.status(400).json({ success: false, message: "Invalid OTP" });
+  }
+
+  // Hash new password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await userModel.updateOne({ email: userEmail }, { password: hashedPassword });
+
+  otpStore.delete(userEmail);
+
+  res.json({ success: true, message: "Password reset successful" });
+};

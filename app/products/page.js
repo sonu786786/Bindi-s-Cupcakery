@@ -6,6 +6,7 @@ import { useCart } from "../../Context/cart";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import Link from "next/link";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -142,20 +143,22 @@ const HomePage = () => {
                   <h5 className="text-xl font-semibold">{p.name}</h5>
                   <p className="text-gray-600 text-sm mt-1">{p.description.substring(0, 50)}...</p>
                   <p className="text-blue-500 font-bold mt-2">₹ {p.price}</p>
-                  <div className="mt-4 flex gap-2">
-                    <button
-                      className="w-1/2 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition-all"
-                      onClick={() => window.location.href = `http://localhost:4000/product/${p.slug}`}
-                    >
-                      More Details
-                    </button>
-                    <button
-                      className="w-1/2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-md transition-all"
-                      onClick={() => handleAddToCart(p)}
-                    >
-                      ADD TO CART
-                    </button>
-                  </div>
+                  
+                  {/* Buttons in Same Row with Styling */}
+                  <div className="mt-4 flex justify-between items-center">
+  <Link href={`/products/${p.slug}`} passHref>
+    <button className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full">
+      More Details
+    </button>
+  </Link>
+  <button
+    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full"
+    onClick={() => handleAddToCart(p)}
+  >
+    Add to Cart
+  </button>
+</div>
+
                 </div>
               </div>
             ))}
