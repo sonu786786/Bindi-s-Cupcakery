@@ -123,58 +123,71 @@ const CartPage = () => {
   }, [cartArray]);
 
   return (
-    <div className="min-h-screen bg-white py-10 px-6">
-      <h1 className="text-center text-4xl font-bold text-gray-800 mb-6">
-        {auth?.user ? `Hello, ${auth.user.name}!` : "Hello, Guest!"}
-      </h1>
-      <p className="text-center text-lg text-gray-600">
-        {cartArray.length
-          ? `You have ${cartArray.length} items in your cart `
-          : "Your cart is empty."}
-      </p>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-center text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+          {auth?.user ? `Hello, ${auth.user.name}!` : "Hello, Guest!"}
+        </h1>
+        <p className="text-center text-lg text-gray-600">
+          {cartArray.length
+            ? `You have ${cartArray.length} items in your cart`
+            : "Your cart is empty."}
+        </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 max-w-7xl mx-auto">
-        <div className="lg:col-span-2">
-          {isCartLoaded ? (
-            cartArray.map((p, index) => (
-              <div key={`${p._id}-${index}`} className="bg-white shadow-md rounded-lg p-4 flex gap-6 mb-4 border border-gray-200">
-                <img
-                  src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`}
-                  alt={p.name}
-                  className="w-28 h-28 object-cover rounded-md border border-gray-300"
-                />
-                <div className="flex-1">
-                  <h5 className="text-xl font-semibold text-gray-700">{p.name}</h5>
-                  <p className="text-gray-500">{p.description.substring(0, 50)}...</p>
-                  <p className="text-lg font-semibold text-gray-800 mt-2">₹{p.price}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+          <div className="lg:col-span-2">
+            {isCartLoaded ? (
+              cartArray.map((p, index) => (
+                <div
+                  key={`${p._id}-${index}`}
+                  className="bg-white shadow-sm rounded-lg p-6 flex gap-6 mb-4 hover:shadow-md transition-shadow duration-200 border border-gray-100"
+                >
+                  <img
+                    src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`}
+                    alt={p.name}
+                    className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-md border border-gray-200"
+                  />
+                  <div className="flex-1">
+                    <h5 className="text-xl font-semibold text-gray-800">{p.name}</h5>
+                    <p className="text-gray-600 text-sm mt-1">{p.description.substring(0, 50)}...</p>
+                    <p className="text-lg font-semibold text-gray-900 mt-2">₹{p.price}</p>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="text-center py-10">
+                <p className="text-xl text-gray-500">Your cart is currently empty.</p>
+                <button
+                  onClick={() => router.push("/")}
+                  className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold transition-all duration-200"
+                >
+                  Continue Shopping
+                </button>
               </div>
-            ))
-          ) : (
-            <p className="text-center text-lg text-gray-500">Your cart is currently empty.</p>
-          )}
-        </div>
+            )}
+          </div>
 
-        <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-800">Cart Summary</h2>
-          <hr className="my-4" />
-          <h4 className="text-lg font-medium text-gray-700">Total Amount: ₹{totalPrice()}</h4>
-          {auth?.token ? (
-            <button
-              className="w-full py-3 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400"
-              onClick={(e) => paymentHandler(e, totalPrice())}
-              disabled={cartArray.length === 0}
-            >
-              Proceed to Payment
-            </button>
-          ) : (
-            <button
-              className="w-full py-3 mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              onClick={() => router.push("/Login")}
-            >
-              Login First
-            </button>
-          )}
+          <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Cart Summary</h2>
+            <hr className="my-4 border-gray-200" />
+            <h4 className="text-lg font-medium text-gray-700">Total Amount: ₹{totalPrice()}</h4>
+            {auth?.token ? (
+              <button
+                className="w-full py-3 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400"
+                onClick={(e) => paymentHandler(e, totalPrice())}
+                disabled={cartArray.length === 0}
+              >
+                Proceed to Payment
+              </button>
+            ) : (
+              <button
+                className="w-full py-3 mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onClick={() => router.push("/Login")}
+              >
+                Login First
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

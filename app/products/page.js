@@ -13,26 +13,26 @@ const HomePage = () => {
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const { cart, setCart } = useCart([]);
 
   useEffect(() => {
     getAllCategory();
-    getTotal();
+    getAllProducts(); // Fetch all products initially
   }, []);
 
   useEffect(() => {
-    getAllProducts();
-  }, [page]);
-
-  useEffect(() => {
-    if (!checked.length || !radio.length) getAllProducts();
+    if (!checked.length && !radio.length) {
+      // Fetch all products when no filters are applied
+      getAllProducts();
+    }
   }, [checked.length, radio.length]);
 
   useEffect(() => {
-    if (checked.length || radio.length) filterProduct();
+    if (checked.length || radio.length) {
+      // Apply filters when checked or radio changes
+      filterProduct();
+    }
   }, [checked, radio]);
 
   const getAllCategory = async () => {
@@ -47,20 +47,11 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`http://localhost:4000/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get("http://localhost:4000/api/v1/product/product-list");
       setLoading(false);
-      setProducts(data.products);
+      setProducts(data.products); // Set all products
     } catch (error) {
       setLoading(false);
-      console.log(error);
-    }
-  };
-
-  const getTotal = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/product/product-count");
-      setTotal(data?.total);
-    } catch (error) {
       console.log(error);
     }
   };
@@ -73,12 +64,15 @@ const HomePage = () => {
 
   const filterProduct = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.post("http://localhost:4000/api/v1/product/product-filters", {
         checked,
         radio,
       });
-      setProducts(data?.products);
+      setLoading(false);
+      setProducts(data?.products); // Set filtered products
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -90,36 +84,52 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-gray-100 text-gray-900 min-h-screen p-6">
+    <div className="bg-white text-black min-h-screen p-6">
       <div className="container mx-auto flex flex-col md:flex-row gap-8">
         {/* Filters Section */}
         <div className="md:w-1/4 bg-white p-6 rounded-lg shadow-lg">
-          <h4 className="text-2xl font-semibold mb-4 text-blue-500 text-center">Filter By Category</h4>
-          <div className="space-y-2">
-            {categories?.map((c) => (
-              <Checkbox
-                key={c._id}
-                onChange={(e) => handleFilter(e.target.checked, c._id)}
-                className="text-gray-700"
-              >
-                {c.name}
-              </Checkbox>
-            ))}
-          </div>
-
-          <h4 className="text-2xl font-semibold mt-6 mb-4 text-blue-500 text-center">Filter By Price</h4>
-          <div className="space-y-2">
-            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-              {Prices?.map((p) => (
-                <div key={p._id} className="text-gray-700">
-                  <Radio value={p.array}>{p.name}</Radio>
-                </div>
+          {/* Filter By Category Section */}
+          <div className="mb-8">
+            <h4 className="text-xl font-semibold mb-4 text-gray-800 text-center">Filter By Category</h4>
+            <div className="space-y-3">
+              {categories?.map((c) => (
+                <label key={c._id} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleFilter(e.target.checked, c._id)}
+                    className="form-checkbox h-5 w-5 text-blue-500 rounded focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">{c.name}</span>
+                </label>
               ))}
-            </Radio.Group>
+            </div>
           </div>
 
+          {/* Divider */}
+          <hr className="my-6 border-gray-200" />
+
+          {/* Filter By Price Section */}
+          <div className="mb-8">
+            <h4 className="text-xl font-semibold mb-4 text-gray-800 text-center">Filter By Price</h4>
+            <div className="space-y-3">
+              {Prices?.map((p) => (
+                <label key={p._id} className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="price"
+                    value={p.array}
+                    onChange={(e) => setRadio(e.target.value)}
+                    className="form-radio h-5 w-5 text-blue-500 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">{p.name}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Reset Filters Button */}
           <button
-            className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full font-bold transition-all"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onClick={() => window.location.reload()}
           >
             RESET FILTERS
@@ -143,37 +153,25 @@ const HomePage = () => {
                   <h5 className="text-xl font-semibold">{p.name}</h5>
                   <p className="text-gray-600 text-sm mt-1">{p.description.substring(0, 50)}...</p>
                   <p className="text-blue-500 font-bold mt-2">₹ {p.price}</p>
-                  
+
                   {/* Buttons in Same Row with Styling */}
                   <div className="mt-4 flex justify-between items-center">
-  <Link href={`/products/${p.slug}`} passHref>
-    <button className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full">
-      More Details
-    </button>
-  </Link>
-  <button
-    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full"
-    onClick={() => handleAddToCart(p)}
-  >
-    Add to Cart
-  </button>
-</div>
-
+                    <Link href={`/products/${p.slug}`} passHref>
+                      <button className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full">
+                        More Details
+                      </button>
+                    </Link>
+                    <button
+                      className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-all font-semibold text-sm w-full"
+                      onClick={() => handleAddToCart(p)}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-
-          {products.length < total && (
-            <div className="mt-8 flex justify-center">
-              <button
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full font-bold transition-all"
-                onClick={() => setPage(page + 1)}
-              >
-                {loading ? "Loading ..." : "Load More"}
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

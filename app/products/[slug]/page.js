@@ -1,22 +1,21 @@
-
 "use client";
+
 import { useCart } from "../../../Context/cart";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { use } from "react";
+import { useParams } from "next/navigation"; // Import useParams
 
-const ProductDetail = ({ params }) => {
-  // Unwrap params using `use()`
-  const { slug } = use(params);
-
+const ProductDetail = () => {
+  const { slug } = useParams(); // Correct way to access params in App Router
   const { cart, setCart } = useCart([]);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      if (!slug) return; // Prevent unnecessary API calls
+
       try {
         const res = await fetch(
           `http://localhost:4000/api/v1/product/get-product/${slug}`,
@@ -48,32 +47,53 @@ const ProductDetail = ({ params }) => {
     toast.success("Item Added to Cart");
   };
 
-  if (loading) return <p className="text-center text-gray-500">Loading product details...</p>;
-  if (!product) return <p className="text-center text-red-500">Product not found</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-center text-gray-500 text-lg">Loading product details...</p>
+      </div>
+    );
+
+  if (!product)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-center text-red-500 text-lg">Product not found</p>
+      </div>
+    );
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h1>
-      
-      <div className="flex flex-col md:flex-row items-center">
-        <Image
-          src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
-          alt={product.name}
-          width={300}
-          height={300}
-          className="rounded-lg shadow-md"
-        />
+    <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
+      <div className="max-w-5xl w-full mx-6 bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Product Image Section */}
+          <div className="p-6 flex justify-center items-center bg-gray-100">
+            <Image
+              src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
+              alt={product.name}
+              width={450}
+              height={450}
+              className="rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+            />
+          </div>
 
-        <div className="md:ml-6 mt-4 md:mt-0">
-          <p className="text-gray-600 mb-2">{product.description}</p>
-          <p className="text-lg font-semibold text-gray-800">Price: ${product.price}</p>
+          {/* Product Details Section */}
+          <div className="p-6 flex flex-col justify-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
+            <p className="text-gray-600 text-lg mb-4 leading-relaxed">{product.description}</p>
+            <p className="text-2xl font-semibold text-gray-900 mb-6">
+              Price: <span className="text-blue-600">₹{product.price}</span>
+            </p>
 
-          <button
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all"
-            onClick={handleAddToCart}
-          >
-            ADD TO CART
-          </button>
+            {/* Add to Cart Button */}
+            <button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md"
+              onClick={handleAddToCart}
+            >
+              ADD TO CART
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
