@@ -37,25 +37,25 @@ export default function Home() {
         </div>
 
         {/* Overlay Content */}
-        <div className="relative z-10 bg-white bg-opacity-0 px-6 py-8 rounded-lg shadow-md">
-          <h1 className="text-5xl font-extrabold text-pink-600 md:text-6xl">
-            Welcome to Bindi’s Cupcakery 🍰
-          </h1>
-          <p className="mt-4 text-lg text-gray-700">
-            100% Eggless, Homemade & Preservative-Free Desserts in Surat!
-          </p>
-          <Link href="/products">
-            <button className="mt-6 bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-lg transition">
-              Order Now
-            </button>
-          </Link>
-        </div>
+        <div className="relative z-10 bg-white bg-opacity-80 backdrop-blur-lg px-10 py-12 rounded-2xl shadow-xl max-w-3xl text-center border border-pink-300">
+    <h1 className="text-5xl md:text-6xl font-extrabold text-green-700 font-[Playfair Display] drop-shadow-md">
+      Welcome to Bindi’s Cupcakery 🍰
+    </h1>
+    <p className="mt-4 text-lg text-gray-800 font-medium">
+      100% Eggless, Homemade & Preservative-Free Desserts in Surat!
+    </p>
+    <Link href="/products">
+      <button className="mt-6 bg-gradient-to-r from-pink-500 to-rose-400 hover:from-rose-400 hover:to-pink-500 text-white font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+        Order Now
+      </button>
+    </Link>
+  </div>
       </section>
 
     {/* Feature Highlights Section */}
 <section className="py-16 bg-gradient-to-b from-pink-50 to-white">
   <div className="container mx-auto px-6 text-center">
-    <h2 className="text-3xl font-bold text-pink-600 mb-10">Why Choose Bindi’s Cupcakery?</h2>
+    <h2 className="sechead">Why Choose Bindi’s Cupcakery?</h2><br />
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {[
         {
@@ -105,7 +105,7 @@ export default function Home() {
 
    {/* Our Products Section */}
 <section className="py-16 px-6 text-center bg-gradient-to-b from-gray-50 to-gray-100">
-  <h2 className="text-4xl font-bold text-pink-600 tracking-wide">Our Products 🍪</h2>
+  <h2 className="sechead">Our Products 🍪</h2>
   <p className="mt-2 text-gray-700 text-lg">Indulge in our delicious range of sweet treats.</p>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-10">
@@ -140,7 +140,7 @@ export default function Home() {
 
     {/* Best Sellers */}
 <section className="py-16 px-6 text-center bg-gradient-to-b from-white to-gray-50">
-  <h2 className="text-4xl font-bold text-pink-600 tracking-wide">Best Sellers 🔥</h2>
+  <h2 className="sechead">Best Sellers</h2>
   
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-10">
     {[
@@ -170,13 +170,12 @@ export default function Home() {
 
 
       {/* Call to Action */}
-      <section className="py-16 bg-pink-500 text-center text-white">
+      <section className="py-16 bg-red-500 text-center text-white">
         <h2 className="text-4xl font-bold">Craving Something Sweet?</h2>
         <p className="mt-2 text-lg">Order now and satisfy your taste buds! 🍰</p>
-        <Link href="/products">
-          <button className="mt-6 bg-white text-pink-600 font-bold py-3 px-8 rounded-full text-lg transition hover:bg-gray-200">
-            Explore Menu
-          </button>
+        <Link href="/products"><br />
+        <button type="button" class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Explore Menu</button>
+
         </Link>
       </section>
 

@@ -22,7 +22,7 @@ const ReviewSlider = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">Customer Reviews</h2>
+      <h2 className="text-center sechead">Customer Reviews</h2><br />
       
       {reviews.length > 0 ? (
         <Swiper

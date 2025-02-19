@@ -67,7 +67,7 @@ const CategoryPage = () => {
               alt={product.name}
               className="w-full h-40 object-cover rounded-md"
             />
-            <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
+            <h2 className="text-lg font-semibold mt-2 text-black">{product.name}</h2>
             <p className="text-gray-600">{product.description.substring(0, 50)}...</p>
             <p className="text-lg font-bold text-gray-800 mt-2">₹{product.price}</p>
             <Link href={`/product/${product._id}`}>

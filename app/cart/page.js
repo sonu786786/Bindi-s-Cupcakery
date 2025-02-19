@@ -4,11 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "../../Context/cart";
 import { useAuth } from "../../Context/auth";
 import { useRouter } from "next/navigation";
+import { FaTrash } from "react-icons/fa"; // Import the trash icon
 
 const CartPage = () => {
   const paymentHandler = async (e, amount) => {
     e.preventDefault();
-
     const receiptId = "qwsaq1";
     console.log("amount = ", amount);
 
@@ -118,6 +118,12 @@ const CartPage = () => {
     return cartArray.reduce((total, item) => total + item.price, 0);
   };
 
+  // Function to remove an item from the cart
+  const removeItem = (productId) => {
+    const updatedCart = cartArray.filter((item) => item._id !== productId);
+    setCart(updatedCart);
+  };
+
   useEffect(() => {
     setIsCartLoaded(cartArray.length > 0);
   }, [cartArray]);
@@ -152,6 +158,12 @@ const CartPage = () => {
                     <p className="text-gray-600 text-sm mt-1">{p.description.substring(0, 50)}...</p>
                     <p className="text-lg font-semibold text-gray-900 mt-2">₹{p.price}</p>
                   </div>
+                  <button
+                    onClick={() => removeItem(p._id)}
+                    className="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
+                  >
+                    <FaTrash className="mr-2" /> Remove
+                  </button>
                 </div>
               ))
             ) : (

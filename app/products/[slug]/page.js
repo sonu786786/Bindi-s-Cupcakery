@@ -79,7 +79,7 @@ const ProductDetail = () => {
 
           {/* Product Details Section */}
           <div className="p-6 flex flex-col justify-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
+            <h1 className="sechead text-black">{product.name}</h1>
             <p className="text-gray-600 text-lg mb-4 leading-relaxed">{product.description}</p>
             <p className="text-2xl font-semibold text-gray-900 mb-6">
               Price: <span className="text-blue-600">₹{product.price}</span>
@@ -87,7 +87,7 @@ const ProductDetail = () => {
 
             {/* Add to Cart Button */}
             <button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md"
+              className="w-full bg-blue-400 hover:bg-blue-500 text-white text-lg font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md"
               onClick={handleAddToCart}
             >
               ADD TO CART

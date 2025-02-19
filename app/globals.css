@@ -67,4 +67,10 @@ body {
   .card-text {
     color: #ffffff;
   }
+  .sechead{
+    font-family: Century;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+  }
   
