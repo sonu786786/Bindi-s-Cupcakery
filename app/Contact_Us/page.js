@@ -20,7 +20,7 @@ const Contact = () => {
 
         <div className="mt-6">
           <h3 className="text-xl font-medium text-purple-600">📩 Email Us</h3>
-          <p className="text-gray-600">feedback@Bindi'sCupcakery.com</p>
+          <p className="text-gray-600">feedback@Bindi&apos;sCupcakery.com</p>
         </div>
 
         <div className="mt-6 text-center">

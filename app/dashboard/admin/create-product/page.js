@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import AdminMenu from "../../../../components/Adminmenu";
+import Image from "next/image";
 const { Option } = Select;
 
 const CreateProduct = () => {
@@ -126,7 +127,7 @@ const CreateProduct = () => {
           {/* Image Preview */}
           {photo && (
             <div className="mb-4 text-center">
-              <img src={URL.createObjectURL(photo)} alt="product_photo" className="h-40 mx-auto rounded-md" />
+              <Image src={URL.createObjectURL(photo)} alt="product_photo" className="h-40 mx-auto rounded-md" />
             </div>
           )}
 

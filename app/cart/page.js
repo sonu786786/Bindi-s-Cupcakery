@@ -5,6 +5,7 @@ import { useCart } from "../../Context/cart";
 import { useAuth } from "../../Context/auth";
 import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa"; // Import the trash icon
+import Image from "next/image";
 
 const CartPage = () => {
   const paymentHandler = async (e, amount) => {
@@ -148,7 +149,7 @@ const CartPage = () => {
                   key={`${p._id}-${index}`}
                   className="bg-white shadow-sm rounded-lg p-6 flex gap-6 mb-4 hover:shadow-md transition-shadow duration-200 border border-gray-100"
                 >
-                  <img
+                  <Image
                     src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
                     className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-md border border-gray-200"

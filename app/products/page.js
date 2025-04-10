@@ -27,7 +27,7 @@ const HomePage = () => {
     } else {
       getAllProducts(); // Show all products when no filters are applied
     }
-  }, [checked, radio]);
+  }, [checked, radio, filterProduct]);
 
   const getAllCategory = async () => {
     try {

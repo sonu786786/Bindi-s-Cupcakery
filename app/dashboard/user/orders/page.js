@@ -4,6 +4,7 @@ import UserMenu from "./../../../../components/Usermenu";
 import axios from "axios";
 import { useAuth } from "../../../../Context/auth";
 import moment from "moment";
+import Image from "next/image";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -67,7 +68,7 @@ const Orders = () => {
                 {o?.products?.map((p) => (
                   <div key={p._id} className="flex items-center bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
                     <div className="w-1/4">
-                      <img
+                      <Image
                         src={`/api/v1/product/product-photo/${p._id}`}
                         alt={p.name}
                         className="w-24 h-24 object-cover rounded-lg"

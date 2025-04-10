@@ -2,6 +2,7 @@
 
 import { useSearch } from "../../Context/search";
 import Link from "next/link";
+import Image from "next/image";
 
 const Search = () => {
   const { search } = useSearch();
@@ -18,7 +19,7 @@ const Search = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
           {search?.results.map((p) => (
             <div key={p._id} className="bg-white p-4 rounded-lg shadow-lg">
-              <img
+              <Image
                 src={`/api/v1/product/product-photo/${p._id}`}
                 className="w-full h-40 object-cover rounded-md"
                 alt={p.name}
