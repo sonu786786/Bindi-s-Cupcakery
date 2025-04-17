@@ -1,6 +1,6 @@
 "use client"; // Ensure this is a client component
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react"; // Add useCallback
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
@@ -18,20 +18,20 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
 
-  const auth = JSON.parse(localStorage.getItem("auth")); // Parse stored object
-  const token = auth?.token; // Extract token
+  const auth = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null; // Ensure localStorage is accessed only in the browser
+  const token = auth?.token;
 
-  // Get all categories
-  const getAllCategory = async () => {
+  // Memoize getAllCategory to prevent re-creation on every render
+  const getAllCategory = useCallback(async () => {
     if (!token) {
       return toast.error("Authentication failed. Please log in.");
     }
 
     try {
       const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       if (data?.success) {
         setCategories(data?.category);
       } else {
@@ -40,11 +40,12 @@ const CreateProduct = () => {
     } catch (error) {
       toast.error("Something went wrong while fetching categories.");
     }
-  };
+  }, [token]); // Add token as a dependency
 
+  // Fetch categories when the component mounts
   useEffect(() => {
     getAllCategory();
-  }, []);
+  }, [getAllCategory]); // Add getAllCategory to the dependency array
 
   // Create product function
   const handleCreate = async (e) => {
@@ -88,9 +89,8 @@ const CreateProduct = () => {
 
       {/* Main Content */}
       <div className="w-3/4 p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">Create Product</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">Create Product</h1>
 
-        
         <form className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md" onSubmit={handleCreate}>
           {/* Category Selection */}
           <div className="mb-4">

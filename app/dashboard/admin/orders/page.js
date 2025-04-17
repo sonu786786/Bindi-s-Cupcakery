@@ -6,6 +6,7 @@ import { useAuth } from "../../../../Context/auth";
 import moment from "moment";
 import { Select } from "antd";
 import AdminMenu from "../../../../components/Adminmenu";
+import Image from "next/image";
 const { Option } = Select;
 
 const AdminOrders = () => {
@@ -109,7 +110,8 @@ const AdminOrders = () => {
                       key={product._id}
                       className="flex items-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300"
                     >
-                      <img
+                      <Image
+                        width={64}
                         src={imageUrl}
                         alt={product.name}
                         className="w-16 h-16 object-cover rounded-md"

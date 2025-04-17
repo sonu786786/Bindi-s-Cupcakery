@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../../price/price";
 import { useCart } from "../../Context/cart";
@@ -16,19 +16,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const { cart, setCart } = useCart([]);
 
-  useEffect(() => {
-    getAllCategory();
-    getAllProducts();
-  }, []);
-
-  useEffect(() => {
-    if (checked.length || radio.length) {
-      filterProduct();
-    } else {
-      getAllProducts(); // Show all products when no filters are applied
-    }
-  }, [checked, radio, filterProduct]);
-
+  // Fetch all categories
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category");
@@ -38,11 +26,11 @@ const HomePage = () => {
     }
   };
 
+  // Fetch all products
   const getAllProducts = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get("http://localhost:4000/api/v1/product/product-list");
-      console.log("Fetched Products:", data); // Debugging Log
       setLoading(false);
       if (data?.products) setProducts(data.products);
     } catch (error) {
@@ -50,25 +38,9 @@ const HomePage = () => {
       console.error("Error fetching products:", error);
     }
   };
-  
 
-  const handleFilter = (value, id) => {
-    let updatedChecked = [...checked];
-    if (value) {
-      updatedChecked.push(id);
-    } else {
-      updatedChecked = updatedChecked.filter((c) => c !== id);
-    }
-
-    setChecked(updatedChecked);
-
-    // If no checkboxes are ticked, show all products
-    if (updatedChecked.length === 0 && radio.length === 0) {
-      getAllProducts();
-    }
-  };
-
-  const filterProduct = async () => {
+  // Memoize filterProduct to prevent re-creation on every render
+  const filterProduct = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await axios.post("http://localhost:4000/api/v1/product/product-filters", {
@@ -81,8 +53,40 @@ const HomePage = () => {
       setLoading(false);
       console.error("Error filtering products:", error);
     }
+  }, [checked, radio]);
+
+  // Fetch categories and products on component mount
+  useEffect(() => {
+    getAllCategory();
+    getAllProducts();
+  }, []);
+
+  // Apply filters when checked or radio changes
+  useEffect(() => {
+    if (checked.length || radio.length) {
+      filterProduct();
+    } else {
+      getAllProducts(); // Show all products when no filters are applied
+    }
+  }, [checked, radio, filterProduct]);
+
+  // Handle category filter
+  const handleFilter = (value, id) => {
+    let updatedChecked = [...checked];
+    if (value) {
+      updatedChecked.push(id);
+    } else {
+      updatedChecked = updatedChecked.filter((c) => c !== id);
+    }
+    setChecked(updatedChecked);
+
+    // If no checkboxes are ticked, show all products
+    if (updatedChecked.length === 0 && radio.length === 0) {
+      getAllProducts();
+    }
   };
 
+  // Handle adding product to cart
   const handleAddToCart = (product) => {
     if (!Array.isArray(cart)) setCart([]);
     setCart((prevCart) => [...prevCart, product]);
@@ -112,7 +116,7 @@ const HomePage = () => {
           </div>
 
           {/* Divider */}
-          <hr className="my-6 border-gray-200" /> 
+          <hr className="my-6 border-gray-200" />
 
           {/* Filter By Price Section */}
           <div className="mb-8">
