@@ -43,7 +43,11 @@ const CategoryPage = () => {
 
     const updatedCart = [...cart, product];
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Store cart in localStorage
+
+    // Ensure localStorage is only accessed on the client side
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart", JSON.stringify(updatedCart)); // Store cart in localStorage
+    }
 
     toast.success(`${product.name} added to cart!`, {
       position: "top-right",
@@ -66,6 +70,8 @@ const CategoryPage = () => {
             <Image
               src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
               alt={product.name}
+              width={300} // Add appropriate width
+              height={200} // Add appropriate height
               className="w-full h-40 object-cover rounded-md"
             />
             <h2 className="text-lg font-semibold mt-2 text-black">{product.name}</h2>

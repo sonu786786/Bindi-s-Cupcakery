@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useCart } from "../../Context/cart";
 import { useAuth } from "../../Context/auth";
 import { useRouter } from "next/navigation";
@@ -102,6 +102,9 @@ const CartPage = () => {
   const [isCartLoaded, setIsCartLoaded] = useState(false);
   const router = useRouter();
 
+  // Memoize cartArray to prevent unnecessary re-renders
+  const cartArray = useMemo(() => (Array.isArray(cart) ? cart : []), [cart]);
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -112,8 +115,6 @@ const CartPage = () => {
       document.body.removeChild(script);
     };
   }, []);
-
-  const cartArray = Array.isArray(cart) ? cart : [];
 
   const totalPrice = () => {
     return cartArray.reduce((total, item) => total + item.price, 0);

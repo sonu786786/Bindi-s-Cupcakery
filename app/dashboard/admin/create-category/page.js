@@ -1,4 +1,4 @@
-"use client"; // Ensure this is a client component
+'use client';
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -6,7 +6,7 @@ import axios from "axios";
 import CategoryForm from "../../../form/category/page";
 import AdminMenu from "../../../../components/Adminmenu";
 
-const CreateCategory = () => {
+const CreateCategoryPage = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [visible, setVisible] = useState(false);
@@ -192,4 +192,4 @@ const CreateCategory = () => {
   );
 };
 
-export default CreateCategory;
+export default CreateCategoryPage;
