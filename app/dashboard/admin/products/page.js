@@ -15,7 +15,7 @@ const Products = () => {
   // Memoize getAllProducts to prevent re-creation on every render
   const getAllProducts = useCallback(async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/product/get-product", {
+      const { data } = await axios.get("https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/get-product", {
         headers: { Authorization: `Bearer ${token}` }, // Include token in the header
       });
       setProducts(data.products);
@@ -52,7 +52,7 @@ const Products = () => {
               <Link key={p._id} href={`/dashboard/admin/product/${p.slug}`} passHref>
                 <div className="card bg-gray-100 border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer">
                   <Image
-                    src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`} // Full URL
+                    src={`https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-photo/${p._id}`} // Full URL
                     width={300} // Set appropriate width
                     height={220} // Set appropriate height
                     className="w-full h-56 object-cover rounded-md mb-4"

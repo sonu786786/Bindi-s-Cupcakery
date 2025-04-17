@@ -28,7 +28,7 @@ const CreateProduct = () => {
     }
 
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category", {
+      const { data } = await axios.get("https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/get-category", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -64,7 +64,7 @@ const CreateProduct = () => {
       productData.append("category", category);
 
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/product/create-product",
+        "https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/create-product",
         productData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

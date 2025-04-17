@@ -11,7 +11,7 @@ const ReviewSlider = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/v1/reviews/approved")
+    fetch("https://bindi-s-cupcakery-backend.vercel.app/api/v1/reviews/approved")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched reviews:", data);

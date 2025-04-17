@@ -19,7 +19,7 @@ const HomePage = () => {
   // Fetch all categories
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/category/get-category");
+      const { data } = await axios.get("https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/get-category");
       if (data?.success) setCategories(data?.category);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -30,7 +30,7 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get("http://localhost:4000/api/v1/product/product-list");
+      const { data } = await axios.get("https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-list");
       setLoading(false);
       if (data?.products) setProducts(data.products);
     } catch (error) {
@@ -43,7 +43,7 @@ const HomePage = () => {
   const filterProduct = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:4000/api/v1/product/product-filters", {
+      const { data } = await axios.post("https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-filters", {
         checked,
         radio,
       });
@@ -160,7 +160,7 @@ const HomePage = () => {
               {products.map((p) => (
                 <div key={p._id} className="bg-white p-4 rounded-lg shadow-lg">
                   <Image
-                    src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`}
+                    src={`https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
                     width={300}
                     height={300}

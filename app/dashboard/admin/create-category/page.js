@@ -33,7 +33,7 @@ const CreateCategory = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/category/create-category",
+        "https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/create-category",
         { name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -53,7 +53,7 @@ const CreateCategory = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/category/get-category"
+        "https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/get-category"
       );
       if (data.success) {
         setCategories(data.category);
@@ -78,7 +78,7 @@ const CreateCategory = () => {
 
     try {
       const { data } = await axios.put(
-        `http://localhost:4000/api/v1/category/update-category/${selected._id}`,
+        `https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/update-category/${selected._id}`,
         { name: updatedName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -105,7 +105,7 @@ const CreateCategory = () => {
 
     try {
       const { data } = await axios.delete(
-        `http://localhost:4000/api/v1/category/delete-category/${pId}`,
+        `https://bindi-s-cupcakery-backend.vercel.app/api/v1/category/delete-category/${pId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

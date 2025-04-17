@@ -18,7 +18,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4000/api/v1/auth/register", {
+      const res = await axios.post("https://bindi-s-cupcakery-backend.vercel.app/api/v1/auth/register", {
         name,
         email,
         password,

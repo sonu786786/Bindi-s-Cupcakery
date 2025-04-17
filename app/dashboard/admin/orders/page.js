@@ -22,7 +22,7 @@ const AdminOrders = () => {
 
   const getOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/auth/all-orders");
+      const { data } = await axios.get("https://bindi-s-cupcakery-backend.vercel.app/api/v1/auth/all-orders");
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -104,7 +104,7 @@ const AdminOrders = () => {
               <h2 className="text-lg font-semibold text-gray-800 mb-2">Products:</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {order?.products?.map((product) => {
-                  const imageUrl = `http://localhost:4000/api/v1/product/product-photo/${product._id}`;
+                  const imageUrl = `https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-photo/${product._id}`;
                   return (
                     <div
                       key={product._id}

@@ -18,7 +18,7 @@ const CategoryPage = () => {
 
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/v1/product/product-category/${slug}`);
+        const res = await fetch(`https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-category/${slug}`);
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data.products);
@@ -68,7 +68,7 @@ const CategoryPage = () => {
         {products.map((product) => (
           <div key={product._id} className="bg-white p-4 rounded-lg shadow-lg">
             <Image
-              src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
+              src={`https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-photo/${product._id}`}
               alt={product.name}
               width={300} // Add appropriate width
               height={200} // Add appropriate height

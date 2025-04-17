@@ -14,7 +14,7 @@ const CartPage = () => {
     console.log("amount = ", amount);
 
     try {
-      const response = await fetch("http://localhost:4000/api/v1/payment/create-order", {
+      const response = await fetch("https://bindi-s-cupcakery-backend.vercel.app/api/v1/payment/create-order", {
         method: "POST",
         body: JSON.stringify({
           amount: amount,
@@ -56,7 +56,7 @@ const CartPage = () => {
             orderDate: new Date().toISOString(),
           };
 
-          const saveOrderRes = await fetch("http://localhost:4000/api/v1/payment/verify-payment", {
+          const saveOrderRes = await fetch("https://bindi-s-cupcakery-backend.vercel.app/api/v1/payment/verify-payment", {
             method: "POST",
             body: JSON.stringify(orderDetails),
             headers: {
@@ -151,7 +151,7 @@ const CartPage = () => {
                   className="bg-white shadow-sm rounded-lg p-6 flex gap-6 mb-4 hover:shadow-md transition-shadow duration-200 border border-gray-100"
                 >
                   <Image
-                    src={`http://localhost:4000/api/v1/product/product-photo/${p._id}`}
+                    src={`https://bindi-s-cupcakery-backend.vercel.app/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
                     className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-md border border-gray-200"
                   />
